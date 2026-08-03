@@ -199,6 +199,35 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
           </div>
         </div>
 
+        {/* Online Presence */}
+        <div className="mb-14">
+          <div className="mb-6">
+            <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">
+              Online Presence
+            </h3>
+            <p className="text-slate-600 dark:text-slate-400">
+              Get listed where local customers search so your business shows up with accurate info
+            </p>
+          </div>
+          <div className="mx-auto max-w-md">
+            <PricingCard
+              category="Online Presence"
+              tier={{
+                name: 'Listing Bundle',
+                price: '$300',
+                features: [
+                  'Google Business Profile setup',
+                  'Yelp business listing',
+                  'Apple Maps listing',
+                  'LinkedIn company page',
+                  'Nextdoor business page',
+                  'Consistent name, address, phone & hours',
+                ],
+              }}
+            />
+          </div>
+        </div>
+
         {/* Edits & Support */}
         <div>
           <div className="mb-6">
