@@ -161,7 +161,9 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
           <p className="text-center text-sm leading-relaxed text-slate-700 dark:text-slate-300 sm:text-left sm:text-base">
             A <strong className="font-semibold text-slate-900 dark:text-white">50%</strong> upfront
             deposit is required to begin all projects. The remaining balance is due upon completion,
-            before final delivery.
+            before final delivery. If a project is cancelled mid-way, we keep{' '}
+            <strong className="font-semibold text-slate-900 dark:text-white">25%</strong> of the
+            upfront deposit and refund the rest.
           </p>
         </div>
 
