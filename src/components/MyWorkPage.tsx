@@ -21,20 +21,9 @@ export function MyWorkPage({ onNavigate }: MyWorkPageProps) {
         <h1 className="mb-4 text-4xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-5xl">
           Client projects I&rsquo;ve shipped
         </h1>
-        <p className="mb-2 max-w-3xl text-lg text-slate-600 dark:text-slate-400">
+        <p className="mb-10 max-w-3xl text-lg text-slate-600 dark:text-slate-400">
           Real builds for paying clients—live tools, integrations, and design decisions behind each
           project.
-        </p>
-        <p className="mb-8 max-w-3xl text-sm text-slate-500 dark:text-slate-500">
-          For sample websites and SaaS concepts by industry, see{' '}
-          <button
-            type="button"
-            onClick={() => onNavigate('/demos')}
-            className="font-semibold text-brand-600 underline-offset-2 hover:underline dark:text-brand-400"
-          >
-            Demos
-          </button>
-          .
         </p>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -81,13 +70,13 @@ export function MyWorkPage({ onNavigate }: MyWorkPageProps) {
         </div>
 
         <div className="mt-12 rounded-2xl border border-dashed border-slate-300 bg-slate-50/80 p-8 text-center dark:border-white/15 dark:bg-slate-900/40">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-white">Portfolio demos</h2>
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white">Want something similar?</h2>
           <p className="mx-auto mt-2 max-w-lg text-sm text-slate-600 dark:text-slate-400">
-            Sample sites and SaaS tools (restaurants, auto shops, dashboards, and more) live on a
-            separate page from client work.
+            Tell me about your business and goals—I&rsquo;ll recommend the right mix of website,
+            tools, and automation.
           </p>
-          <Button variant="secondary" onClick={() => onNavigate('/demos')} className="mt-5">
-            Browse demos
+          <Button onClick={() => onNavigate('/contact')} className="mt-5">
+            Start a project
           </Button>
         </div>
       </div>

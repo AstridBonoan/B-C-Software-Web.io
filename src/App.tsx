@@ -6,7 +6,6 @@ import { Services } from './components/Services'
 import { Pricing } from './components/Pricing'
 import { ContactForm } from './components/ContactForm'
 import { Footer } from './components/Footer'
-import { DemosPage } from './components/DemosPage'
 import { AboutMePage } from './components/AboutMePage'
 import { MyWorkPage } from './components/MyWorkPage'
 import './index.css'
@@ -48,7 +47,6 @@ function App() {
         {pathname === '/services' && <Services />}
         {pathname === '/pricing' && <Pricing onSelect={handlePricingSelect} />}
         {pathname === '/contact' && <ContactForm subject={contactSubject} />}
-        {pathname === '/demos' && <DemosPage onNavigate={navigateTo} />}
         {pathname === '/my-work' && <MyWorkPage onNavigate={navigateTo} />}
         {pathname === '/about' && <AboutMePage onNavigate={navigateTo} />}
       </main>

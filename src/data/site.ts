@@ -89,52 +89,7 @@ export const WHY_CHOOSE = [
   'Professional user experience',
 ] as const;
 
-export const FEATURED_DEMOS = [
-  {
-    title: 'Vick Auto Repair',
-    industry: 'Auto Shop',
-    problem: 'Turn search traffic into scheduled service calls',
-    image: 'vick-auto-repair.png',
-    href: 'https://astridbonoan.github.io/vick-autoshop.io-/',
-  },
-  {
-    title: 'Good Eats',
-    industry: 'Restaurant',
-    problem: 'Menu, hours, and ordering in one trusted place',
-    image: 'good-eats.png',
-    href: 'https://astridbonoan.github.io/GoodEats.io/',
-  },
-  {
-    title: 'A&S Barbershop',
-    industry: 'Barbershop',
-    problem: 'Booking without endless phone tag',
-    image: 'as-barbershop.png',
-    href: 'https://astridbonoan.github.io/AS_Barbershop.io/',
-  },
-  {
-    title: 'A&S Renovations',
-    industry: 'Construction',
-    problem: 'Credibility and clear next steps for major projects',
-    image: 'as-renovations.png',
-    href: 'https://astridbonoan.github.io/AS-Renovations.io/',
-  },
-  {
-    title: '1 Mi Taller Auto Repair',
-    industry: 'Auto Shop',
-    problem: 'Earn trust before the first bay opens',
-    image: 'mi-taller-auto-repair.png',
-    href: 'https://astridbonoan.github.io/1-Mi-Taller-Auto-Repair.io/',
-  },
-  {
-    title: 'Ember Bowl Co.',
-    industry: 'Restaurant',
-    problem: 'Brand story that drives dine-in and takeout',
-    image: 'ember-bowl-co.png',
-    href: 'https://astridbonoan.github.io/AS_Casual_Restaurant.io/',
-  },
-] as const;
-
-/** Live client projects (not portfolio demos). */
+/** Live client projects. */
 export const CLIENT_WORK = [
   {
     title: 'Company Website',
