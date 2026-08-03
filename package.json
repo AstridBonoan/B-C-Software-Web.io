@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://astridbonoan.github.io/bonoan_enterprises.io/",
+  "homepage": "https://astridbonoan.github.io/B-C-Software-Web.io/",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
