@@ -56,7 +56,7 @@ export function AboutMePage({ onNavigate }: AboutMePageProps) {
                 Astrid Bonoan
               </h2>
               <p className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400 mb-4">
-                Founder &amp; Lead Developer
+                Co-Founder &amp; Chief Technology Officer
               </p>
 
               <div className="space-y-3 text-base text-slate-700 dark:text-slate-300 leading-relaxed">
