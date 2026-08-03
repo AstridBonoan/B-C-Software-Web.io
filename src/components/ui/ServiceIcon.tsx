@@ -44,6 +44,13 @@ export function ServiceIcon({ name, className = 'h-6 w-6' }: ServiceIconProps) {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M8 3v2m8-2v2M5 9h14M6 5h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2z" />
         </svg>
       );
+    case 'map-pin':
+      return (
+        <svg {...props}>
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M12 21s7-4.5 7-11a7 7 0 10-14 0c0 6.5 7 11 7 11z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M12 11.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+        </svg>
+      );
     case 'refresh':
       return (
         <svg {...props}>

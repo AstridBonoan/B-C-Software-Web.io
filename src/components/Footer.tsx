@@ -54,7 +54,7 @@ export function Footer({ onNavigate }: FooterProps) {
               Services
             </h3>
             <ul className="space-y-2.5 text-sm text-slate-400">
-              {SERVICES.slice(0, 5).map((service) => (
+              {SERVICES.map((service) => (
                 <li key={service.title}>{service.title}</li>
               ))}
             </ul>

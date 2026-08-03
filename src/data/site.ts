@@ -52,6 +52,12 @@ export const SERVICES = [
       'Scheduling, reservations, and order flows that reduce phone tag and missed opportunities.',
     icon: 'calendar',
   },
+  {
+    title: 'Online Presence',
+    description:
+      'Get found where customers search—Google Business Profile, Yelp, Apple Maps, LinkedIn, Nextdoor, and more, set up and ready to attract local leads.',
+    icon: 'map-pin',
+  },
 ] as const;
 
 export const PROCESS_STEPS = [
