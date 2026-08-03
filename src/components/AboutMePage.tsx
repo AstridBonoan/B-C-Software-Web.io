@@ -6,6 +6,8 @@ const TEAM = [
   {
     name: 'Astrid Bonoan',
     title: 'Co-Founder & Chief Technology Officer',
+    phone: '(917) 500-9756',
+    phoneHref: 'tel:+19175009756',
     photoSrc: `${import.meta.env.BASE_URL}about-me.png`,
     photoAlt: 'Astrid Bonoan',
     initials: 'AB',
@@ -17,6 +19,8 @@ const TEAM = [
   {
     name: 'Charlie Flores',
     title: 'Co-Founder & Chief Marketing Officer',
+    phone: '(929) 395-2195',
+    phoneHref: 'tel:+19293952195',
     photoSrc: null as string | null,
     photoAlt: 'Charlie Flores',
     initials: 'CF',
@@ -100,9 +104,15 @@ export function AboutMePage({ onNavigate }: AboutMePageProps) {
                   <h2 className="mb-1 text-2xl font-bold text-slate-900 dark:text-white sm:text-3xl">
                     {member.name}
                   </h2>
-                  <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400 sm:text-sm">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400 sm:text-sm">
                     {member.title}
                   </p>
+                  <a
+                    href={member.phoneHref}
+                    className="mb-4 inline-flex text-sm font-medium text-slate-600 transition-colors hover:text-brand-600 dark:text-slate-400 dark:hover:text-brand-400"
+                  >
+                    {member.phone}
+                  </a>
 
                   <div className="space-y-3 text-base leading-relaxed text-slate-700 dark:text-slate-300">
                     {member.bio.map((paragraph) => (
