@@ -1,13 +1,11 @@
 export const BRAND = {
-  name: 'Bonoan Enterprises',
+  name: 'B&C Software & Web',
   headline: 'Modern Digital Solutions for Growing Businesses',
   tagline:
     'Custom websites, software, and automation designed to help businesses operate smarter and look more professional online.',
-  email: 'bonoanenterprises@gmail.com',
-  phone: '(917) 500-9756',
-  phoneHref: 'tel:+19175009756',
-  instagram: 'https://www.instagram.com/bonoan_enterprises/',
-  instagramHandle: '@bonoan_enterprises',
+  email: 'bcsoftwareweb@gmail.com',
+  instagram: 'https://www.instagram.com/bcsoftware_web/?hl=en',
+  instagramHandle: '@bcsoftware_web',
   calendlyPlaceholder: '#schedule-intro-call',
 } as const;
 

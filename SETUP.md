@@ -1,4 +1,4 @@
-# Bonoan Enterprises Website - Setup Guide
+# B&C Software & Web Website - Setup Guide
 
 ## Initial Setup Instructions
 
@@ -243,4 +243,4 @@ For issues with React, visit: https://react.dev
 
 ---
 
-**Your Bonoan Enterprises website is ready to launch! 🚀**
+**Your B&C Software & Web website is ready to launch! 🚀**

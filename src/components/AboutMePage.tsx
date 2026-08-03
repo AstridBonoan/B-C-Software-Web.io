@@ -18,7 +18,7 @@ export function AboutMePage({ onNavigate }: AboutMePageProps) {
             One point of contact for your upgrade
           </h1>
           <p className="text-lg text-slate-600 dark:text-slate-400">
-            The person behind Bonoan Enterprises—focused on helping local businesses grow online.
+            The person behind B&C Software & Web—focused on helping local businesses grow online.
           </p>
         </div>
 
@@ -61,7 +61,7 @@ export function AboutMePage({ onNavigate }: AboutMePageProps) {
 
               <div className="space-y-3 text-base text-slate-700 dark:text-slate-300 leading-relaxed">
                 <p>
-                  I&rsquo;m the founder of Bonoan Enterprises, where I help small businesses
+                  I&rsquo;m the founder of B&C Software &amp; Web, where I help small businesses
                   and growing teams ship websites, apps, and internal tools that
                   actually move the needle &mdash; with clean code, fast pages, and
                   design that earns the user&rsquo;s trust on the first scroll.

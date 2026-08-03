@@ -16,12 +16,6 @@ export function ContactForm({ subject = '' }: ContactFormProps) {
       <div className="mx-auto max-w-2xl">
         <div className="mb-8 flex flex-wrap gap-3">
           <a
-            href={BRAND.phoneHref}
-            className="inline-flex rounded-xl border border-slate-200/90 px-4 py-2.5 text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-50 dark:border-white/10 dark:text-slate-200 dark:hover:bg-white/5"
-          >
-            {BRAND.phone}
-          </a>
-          <a
             href={`mailto:${BRAND.email}`}
             className="inline-flex rounded-xl border border-slate-200/90 px-4 py-2.5 text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-50 dark:border-white/10 dark:text-slate-200 dark:hover:bg-white/5"
           >

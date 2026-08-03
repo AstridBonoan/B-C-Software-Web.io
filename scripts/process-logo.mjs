@@ -1,13 +1,12 @@
-// Generates theme-aware variants of the Bonoan Enterprises logo.
+// Generates theme-aware variants of the B&C Software & Web logo.
 //
-// Reads `public/logo.png` (the source: bright "BE" mark + white "Bonoan Enterprises"
-// wordmark on a solid black canvas) and writes two transparent PNGs:
+// Reads `public/logo.png` (the source: dark "B" + blue-gradient "&C" mark +
+// dark "SOFTWARE & WEB" wordmark on a solid white canvas) and writes:
 //
-//   - public/logo-dark.png  -> transparent bg + white wordmark   (use on dark UIs)
-//   - public/logo-light.png -> transparent bg + slate wordmark   (use on light UIs)
+//   - public/logo-dark.png  -> transparent bg + light wordmark/B   (use on dark UIs)
+//   - public/logo-light.png -> transparent bg + dark wordmark/B    (use on light UIs)
 //
-// The colored "B" mark is preserved in both because we only recolor near-grayscale
-// pixels (the wordmark) and only drop the near-black background to alpha 0.
+// Saturated blue gradient pixels ("&C") are preserved in both variants.
 //
 // Run with: `node scripts/process-logo.mjs`
 
@@ -23,16 +22,13 @@ const darkOutPath = path.join(projectRoot, 'public', 'logo-dark.png');
 const markLightOutPath = path.join(projectRoot, 'public', 'logo-mark-light.png');
 const markDarkOutPath = path.join(projectRoot, 'public', 'logo-mark-dark.png');
 
-// Pixels darker than this luminance are treated as pure background and removed.
-const BG_LUMA_CUTOFF = 18;
-// Pixels with luminance up to this value are softly faded out (anti-aliased edges).
-const BG_LUMA_FADE_END = 60;
-// Saturation (max-min channel) below this means the pixel is grayscale-ish.
-// The "B" mark uses saturated blue/green, so only the wordmark + bg are grayscale.
-const GRAYSCALE_SAT = 30;
-// In the light variant, the wordmark gets remapped to this slate color so it
-// reads cleanly on a white page (matches Tailwind's slate-900).
-const WORDMARK_LIGHT = { r: 15, g: 23, b: 42 };
+// Near-white background: remove / fade to transparent.
+const BG_LUMA_CUTOFF = 245;
+const BG_LUMA_FADE_START = 220;
+// Saturation below this = grayscale-ish (navy B + wordmark), not the blue &C.
+const GRAYSCALE_SAT = 35;
+// Dark variant remaps the navy mark/wordmark to near-white for dark pages.
+const WORDMARK_DARK = { r: 248, g: 250, b: 252 };
 
 const luma = (r, g, b) => 0.299 * r + 0.587 * g + 0.114 * b;
 
@@ -56,7 +52,6 @@ for (let i = 0; i < data.length; i += 4) {
   const l = luma(r, g, b);
   const sat = Math.max(r, g, b) - Math.min(r, g, b);
 
-  // Default: copy source pixel unchanged into both buffers.
   lightBuf[i] = r;
   lightBuf[i + 1] = g;
   lightBuf[i + 2] = b;
@@ -66,43 +61,36 @@ for (let i = 0; i < data.length; i += 4) {
   darkBuf[i + 2] = b;
   darkBuf[i + 3] = a;
 
-  if (l <= BG_LUMA_CUTOFF) {
-    // Pure black background -> fully transparent.
+  if (l >= BG_LUMA_CUTOFF) {
     lightBuf[i + 3] = 0;
     darkBuf[i + 3] = 0;
     continue;
   }
 
-  if (l < BG_LUMA_FADE_END && sat < GRAYSCALE_SAT) {
-    // Dark grayscale pixels (mostly anti-aliased edges of the wordmark/bg).
-    // Fade them out smoothly to avoid a hard halo against the page color.
-    const t = (l - BG_LUMA_CUTOFF) / (BG_LUMA_FADE_END - BG_LUMA_CUTOFF);
+  if (l > BG_LUMA_FADE_START && sat < GRAYSCALE_SAT) {
+    // Soft fade on anti-aliased white edges.
+    const t = (BG_LUMA_CUTOFF - l) / (BG_LUMA_CUTOFF - BG_LUMA_FADE_START);
     const faded = Math.round(255 * t);
     lightBuf[i + 3] = Math.min(a, faded);
     darkBuf[i + 3] = Math.min(a, faded);
     continue;
   }
 
-  if (sat < GRAYSCALE_SAT && l >= BG_LUMA_FADE_END) {
-    // Bright grayscale pixel -> the white "Bonoan Enterprises" wordmark.
-    // Dark variant: keep it white (already correct).
-    // Light variant: remap to a dark slate so it reads on white pages,
-    // preserving the original alpha for nice anti-aliasing.
-    lightBuf[i] = WORDMARK_LIGHT.r;
-    lightBuf[i + 1] = WORDMARK_LIGHT.g;
-    lightBuf[i + 2] = WORDMARK_LIGHT.b;
-    // alpha already copied above
+  if (sat < GRAYSCALE_SAT && l < BG_LUMA_FADE_START) {
+    // Dark navy / gray mark + wordmark.
+    // Light variant: keep as-is (already dark for white pages).
+    // Dark variant: remap to near-white so it reads on dark UIs.
+    darkBuf[i] = WORDMARK_DARK.r;
+    darkBuf[i + 1] = WORDMARK_DARK.g;
+    darkBuf[i + 2] = WORDMARK_DARK.b;
   }
-  // Saturated pixels (the colored "B" mark) are preserved as-is in both variants.
+  // Saturated blue (&C) preserved in both.
 }
 
 const baseInfo = {
   raw: { width: info.width, height: info.height, channels: 4 },
 };
 
-// Trim the surrounding transparent padding so the logo fills the bounding box
-// tightly. This keeps the navbar/footer rendering crisp without large empty
-// whitespace around the mark.
 const trimOpts = { background: { r: 0, g: 0, b: 0, alpha: 0 }, threshold: 1 };
 
 await sharp(lightBuf, baseInfo)
@@ -114,10 +102,7 @@ await sharp(darkBuf, baseInfo)
   .png({ compressionLevel: 9 })
   .toFile(darkOutPath);
 
-// Find the first all-transparent row after the "B" mark. The lockup has the
-// mark at the top and the wordmark beneath, separated by a thin transparent
-// band. The light and dark buffers share the same alpha channel, so we scan
-// either one. We crop rows [0, markCropHeight) for the mark-only variant.
+// Find the first all-transparent row after the "B&C" mark (gap before wordmark).
 function findGapAfterMark(buf, width, height) {
   let sawPixel = false;
   for (let y = 0; y < height; y++) {
@@ -139,10 +124,6 @@ function findGapAfterMark(buf, width, height) {
 
 const markCropHeight = Math.max(1, findGapAfterMark(lightBuf, info.width, info.height));
 
-// Extract just the top "B" mark portion of each variant and then trim the
-// surrounding transparent padding. We round-trip through PNG buffers between
-// the extract and trim steps because chaining them on a single pipeline can
-// fail in some sharp versions.
 const lightPng = await sharp(lightBuf, baseInfo).png().toBuffer();
 const darkPng = await sharp(darkBuf, baseInfo).png().toBuffer();
 

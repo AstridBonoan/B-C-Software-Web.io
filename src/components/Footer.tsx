@@ -67,14 +67,6 @@ export function Footer({ onNavigate }: FooterProps) {
             <ul className="space-y-3 text-sm">
               <li>
                 <a
-                  href={BRAND.phoneHref}
-                  className="text-slate-400 transition-colors hover:text-white"
-                >
-                  {BRAND.phone}
-                </a>
-              </li>
-              <li>
-                <a
                   href={`mailto:${BRAND.email}`}
                   className="text-slate-400 transition-colors hover:text-white"
                 >

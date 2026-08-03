@@ -1,6 +1,6 @@
-# Bonoan Enterprises - Professional Business Website
+# B&C Software & Web - Professional Business Website
 
-A modern, professional mobile-first website for Bonoan Enterprises built with React, Tailwind CSS, and Vite.
+A modern, professional mobile-first website for B&C Software & Web built with React, Tailwind CSS, and Vite.
 
 ## 🌟 Features
 
@@ -130,7 +130,7 @@ No custom CSS needed - everything uses Tailwind utility classes!
 
 ## 📄 License
 
-Proprietary to Bonoan Enterprises.
+Proprietary to B&C Software & Web.
 
 ---
 

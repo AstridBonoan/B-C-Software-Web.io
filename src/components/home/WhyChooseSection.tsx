@@ -13,7 +13,7 @@ export function WhyChooseSection() {
         <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-20">
           <SectionHeader
             align="left"
-            eyebrow="Why Bonoan Enterprises"
+            eyebrow="Why B&C Software & Web"
             title="Focused on your growth—not jargon"
             description="I combine modern design, reliable technology, and direct communication so you always know where your project stands."
           />

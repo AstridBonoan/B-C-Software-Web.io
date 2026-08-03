@@ -30,14 +30,8 @@ export function CTASection({ onNavigate }: CTASectionProps) {
 
                 <div className="mt-8 flex flex-col gap-3">
                   <a
-                    href={BRAND.phoneHref}
-                    className="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
-                  >
-                    Call {BRAND.phone}
-                  </a>
-                  <a
                     href={`mailto:${BRAND.email}`}
-                    className="inline-flex items-center justify-center rounded-xl border border-white/20 px-5 py-3 text-sm font-semibold text-slate-300 transition-colors hover:border-white/40 hover:text-white"
+                    className="inline-flex items-center justify-center rounded-xl border border-white/20 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
                   >
                     Email {BRAND.email}
                   </a>
