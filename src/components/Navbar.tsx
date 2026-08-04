@@ -3,8 +3,6 @@ import { BRAND } from '../data/site';
 import { Button } from './ui/Button';
 
 interface NavbarProps {
-  isDark: boolean;
-  onThemeToggle: () => void;
   pathname: string;
   onNavigate: (path: string) => void;
 }
@@ -13,15 +11,16 @@ const NAV_LINKS = [
   { path: '/', label: 'Home' },
   { path: '/about', label: 'About' },
   { path: '/services', label: 'Services' },
-  { path: '/my-work', label: 'My Work' },
+  { path: '/my-work', label: 'Our Work' },
   { path: '/demos', label: 'Demos' },
+  { path: '/reviews', label: 'Reviews' },
   { path: '/pricing', label: 'Pricing' },
   { path: '/contact', label: 'Contact' },
 ] as const;
 
-export function Navbar({ isDark, onThemeToggle, pathname, onNavigate }: NavbarProps) {
+export function Navbar({ pathname, onNavigate }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const logoMarkSrc = `${import.meta.env.BASE_URL}logo-mark-${isDark ? 'dark' : 'light'}.png`;
+  const logoMarkSrc = `${import.meta.env.BASE_URL}logo-mark-light.png`;
 
   const closeMenu = () => setIsMenuOpen(false);
 
@@ -61,65 +60,62 @@ export function Navbar({ isDark, onThemeToggle, pathname, onNavigate }: NavbarPr
   }, [isMenuOpen]);
 
   const navLinkClass = (path: string) =>
-    'block w-full rounded-xl px-4 py-3.5 text-left text-base font-medium transition-colors ' +
+    'block w-full rounded-lg px-4 py-3.5 text-left text-base font-medium transition-colors ' +
     (pathname === path
-      ? 'bg-brand-50 text-brand-700 dark:bg-brand-500/15 dark:text-brand-300'
-      : 'text-slate-800 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-white/10');
+      ? 'bg-slate-100 text-ink'
+      : 'text-ink hover:bg-slate-50');
 
   return (
     <>
-      <header className="fixed top-0 z-50 w-full nav-glass">
-        <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-3 px-4 sm:h-16 sm:px-6 lg:px-8">
-          <button type="button" onClick={goToHome} className="flex min-w-0 shrink items-center gap-2">
-            <img src={logoMarkSrc} alt="" className="h-8 w-auto sm:h-9" />
-            <span className="truncate text-base font-bold tracking-tight text-slate-900 dark:text-white sm:text-lg">
-              {BRAND.name}
+      <header className="fixed top-0 z-50 w-full nav-bar">
+        <div className="mx-auto flex h-14 max-w-[90rem] items-center gap-3 px-4 sm:h-16 sm:px-5 lg:gap-4 lg:px-6 xl:px-8">
+          <button
+            type="button"
+            onClick={goToHome}
+            className="flex min-w-0 shrink-0 items-center gap-2"
+          >
+            <img src={logoMarkSrc} alt="" className="h-8 w-auto shrink-0" />
+            <span className="hidden font-display text-sm font-semibold tracking-tight text-ink whitespace-nowrap lg:inline">
+              B&amp;C Software
             </span>
+            <span className="sr-only">{BRAND.name}</span>
           </button>
 
-          <nav className="hidden items-center gap-6 lg:gap-7 md:flex" aria-label="Main">
-            {NAV_LINKS.map((link) => (
-              <button
-                key={link.path}
-                type="button"
-                onClick={() => onNavigate(link.path)}
-                className={
-                  'text-sm font-medium transition-colors ' +
-                  (pathname === link.path
-                    ? 'text-brand-600 dark:text-brand-400'
-                    : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white')
-                }
-              >
-                {link.label}
-              </button>
-            ))}
+          <nav
+            className="hidden min-w-0 flex-1 items-center justify-center md:flex"
+            aria-label="Main"
+          >
+            <div className="flex flex-wrap items-center justify-center gap-x-0.5 gap-y-0 lg:gap-x-1">
+              {NAV_LINKS.map((link) => {
+                const isActive = pathname === link.path;
+                return (
+                  <button
+                    key={link.path}
+                    type="button"
+                    onClick={() => onNavigate(link.path)}
+                    className={
+                      'whitespace-nowrap rounded-md px-2 py-1.5 text-sm font-medium transition-colors lg:px-2.5 lg:text-[15px] xl:px-3 ' +
+                      (isActive ? 'text-ink' : 'text-ink-muted hover:text-ink')
+                    }
+                  >
+                    {link.label}
+                    <span
+                      className={
+                        'mt-1 block h-px w-full ' +
+                        (isActive ? 'bg-brand-600' : 'bg-transparent')
+                      }
+                      aria-hidden
+                    />
+                  </button>
+                );
+              })}
+            </div>
           </nav>
 
           <div className="flex shrink-0 items-center gap-2">
-            <button
-              onClick={onThemeToggle}
-              type="button"
-              className="hidden rounded-xl border border-slate-200/80 p-2.5 text-slate-700 transition-colors hover:bg-slate-100 dark:border-white/10 dark:text-slate-300 dark:hover:bg-white/10 md:flex"
-              aria-label="Toggle theme"
-            >
-              {isDark ? (
-                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden>
-                  <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-                </svg>
-              ) : (
-                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden>
-                  <path
-                    fillRule="evenodd"
-                    d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm5.657-9.193a1 1 0 00-1.414 0l-.707.707A1 1 0 005.05 13.536l.707.707a1 1 0 001.414-1.414l-.707-.707zm2.828 2.829a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              )}
-            </button>
-
             <Button
               onClick={() => onNavigate('/contact')}
-              className="hidden py-2.5 text-sm md:inline-flex"
+              className="hidden px-3 py-2 text-xs md:inline-flex lg:px-4 lg:text-sm"
             >
               Start a Project
             </Button>
@@ -127,7 +123,7 @@ export function Navbar({ isDark, onThemeToggle, pathname, onNavigate }: NavbarPr
             <button
               onClick={() => setIsMenuOpen((open) => !open)}
               type="button"
-              className="inline-flex rounded-xl border border-slate-200/80 p-2.5 text-slate-900 transition-colors hover:bg-slate-100 dark:border-white/10 dark:text-white dark:hover:bg-white/10 md:hidden"
+              className="inline-flex rounded-lg border border-slate-200 p-2.5 text-ink transition-colors hover:bg-slate-50 md:hidden"
               aria-expanded={isMenuOpen}
               aria-controls="mobile-nav-menu"
               aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
@@ -144,14 +140,13 @@ export function Navbar({ isDark, onThemeToggle, pathname, onNavigate }: NavbarPr
         </div>
       </header>
 
-      {/* Mobile menu — rendered outside header so it can use full viewport height */}
       <div
         className={`fixed inset-0 z-[60] md:hidden ${isMenuOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
         aria-hidden={!isMenuOpen}
       >
         <button
           type="button"
-          className={`absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300 ${
+          className={`absolute inset-0 bg-ink/50 transition-opacity duration-300 ${
             isMenuOpen ? 'opacity-100' : 'opacity-0'
           }`}
           onClick={closeMenu}
@@ -164,19 +159,19 @@ export function Navbar({ isDark, onThemeToggle, pathname, onNavigate }: NavbarPr
           role="dialog"
           aria-modal="true"
           aria-label="Site navigation"
-          className={`absolute inset-y-0 right-0 flex w-full max-w-sm flex-col border-l border-slate-200 bg-white shadow-2xl transition-transform duration-300 ease-out dark:border-white/10 dark:bg-slate-950 ${
+          className={`absolute inset-y-0 right-0 flex w-full max-w-sm flex-col border-l border-slate-200 bg-white shadow-xl transition-transform duration-300 ease-out ${
             isMenuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
-          <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4 dark:border-white/10">
+          <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
             <div className="flex items-center gap-2.5">
               <img src={logoMarkSrc} alt="" className="h-8 w-auto" />
-              <span className="font-semibold text-slate-900 dark:text-white">Menu</span>
+              <span className="font-display font-semibold text-ink">Menu</span>
             </div>
             <button
               type="button"
               onClick={closeMenu}
-              className="rounded-xl p-2 text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"
+              className="rounded-lg p-2 text-ink-muted hover:bg-slate-100"
               aria-label="Close menu"
             >
               <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
@@ -197,14 +192,7 @@ export function Navbar({ isDark, onThemeToggle, pathname, onNavigate }: NavbarPr
             </ul>
           </nav>
 
-          <div className="space-y-3 border-t border-slate-200 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] dark:border-white/10">
-            <button
-              type="button"
-              onClick={onThemeToggle}
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-50 dark:border-white/10 dark:text-slate-200 dark:hover:bg-white/5"
-            >
-              {isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-            </button>
+          <div className="border-t border-slate-200 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
             <Button onClick={() => handleNavigate('/contact')} className="w-full">
               Start a Project
             </Button>

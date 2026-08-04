@@ -20,6 +20,25 @@ The React contact form uses `@formspree/react` and is configured with form ID
 - Fill out and submit the contact form
 - Check the Formspree dashboard to verify submissions are coming through
 
+### 2b. Supabase (Reviews)
+
+Reviews submit as **pending** and only show publicly after you approve them.
+
+1. Create a free project at [supabase.com](https://supabase.com).
+2. In **SQL Editor**, run the script in `supabase/reviews.sql`.
+3. Copy **Project URL** and **publishable** key from **Project Settings → API** (or the Vite connect panel).
+4. Create a `.env` file in the project root (see `.env.example`):
+
+```env
+VITE_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=YOUR_SUPABASE_PUBLISHABLE_KEY
+```
+
+5. Restart the dev server so Vite picks up the env vars.
+6. To publish a review: open **Table Editor → reviews**, set `status` from `pending` to `approved`.
+
+For GitHub Pages, add the same `VITE_SUPABASE_*` values as repository secrets / Actions env when you build, or bake them into the hosting environment that runs `npm run build`.
+
 ### 3. Update Social Media Links
 
 Edit `src/components/Footer.tsx` and update the URLs:

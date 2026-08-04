@@ -1,34 +1,44 @@
 import { PROCESS_STEPS } from '../../data/site';
-import { AnimatedSection } from '../ui/AnimatedSection';
 import { SectionHeader } from '../ui/SectionHeader';
 
 export function ProcessSection() {
   return (
-    <section id="process" aria-labelledby="process-heading" className="section-padding">
+    <section id="process" aria-labelledby="process-heading" className="section-padding bg-white dark:bg-surface-dark">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
           eyebrow="My process"
           title="Simple steps from first call to launch"
           description="A straightforward path designed for busy owners—no confusing project speak."
+          align="left"
         />
 
-        <ol className="grid gap-5 md:grid-cols-3">
-          {PROCESS_STEPS.map((step, index) => (
-            <AnimatedSection key={step.title} delay={index * 0.08}>
-              <li className="relative h-full list-none rounded-2xl border border-slate-200/90 bg-white p-7 shadow-sm dark:border-white/10 dark:bg-slate-900/75 sm:p-8">
-                <p className="text-5xl font-bold tabular-nums text-slate-200 dark:text-slate-800">{step.step}</p>
-                <h3
-                  id={index === 0 ? 'process-heading' : undefined}
-                  className="mt-2 text-xl font-bold text-slate-900 dark:text-white"
-                >
-                  {step.title}
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                  {step.description}
-                </p>
+        <ol className="max-w-2xl space-y-0">
+          {PROCESS_STEPS.map((step, index) => {
+            const isLast = index === PROCESS_STEPS.length - 1;
+            return (
+              <li key={step.title} className="relative flex gap-5 sm:gap-6">
+                <div className="flex flex-col items-center">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300 bg-white font-display text-xs font-semibold text-ink dark:border-white/20 dark:bg-surface-dark dark:text-white">
+                    {step.step}
+                  </span>
+                  {!isLast ? (
+                    <span className="my-2 w-px flex-1 bg-slate-200 dark:bg-white/15" aria-hidden />
+                  ) : null}
+                </div>
+                <div className={isLast ? 'pb-0' : 'pb-10 sm:pb-12'}>
+                  <h3
+                    id={index === 0 ? 'process-heading' : undefined}
+                    className="font-display text-xl font-semibold text-ink dark:text-white"
+                  >
+                    {step.title}
+                  </h3>
+                  <p className="mt-2 text-base leading-relaxed text-ink-muted dark:text-slate-400">
+                    {step.description}
+                  </p>
+                </div>
               </li>
-            </AnimatedSection>
-          ))}
+            );
+          })}
         </ol>
       </div>
     </section>

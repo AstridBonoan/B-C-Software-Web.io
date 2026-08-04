@@ -9,13 +9,13 @@ export function Footer({ onNavigate }: FooterProps) {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-white/10 bg-slate-950 text-slate-300">
+    <footer className="border-t border-white/10 bg-ink text-slate-300">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-16">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-1">
             <div className="mb-4 flex items-center gap-2.5">
               <img src={logoMarkSrc} alt="" className="h-10 w-auto" />
-              <span className="text-lg font-bold text-white">{BRAND.name}</span>
+              <span className="font-display text-lg font-semibold text-white">{BRAND.name}</span>
             </div>
             <p className="max-w-sm text-sm leading-relaxed text-slate-400">
               {BRAND.tagline}
@@ -23,15 +23,16 @@ export function Footer({ onNavigate }: FooterProps) {
           </div>
 
           <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white">
+            <h3 className="mb-4 font-display text-sm font-semibold tracking-wide text-white">
               Navigation
             </h3>
             <ul className="space-y-2.5 text-sm">
               {[
                 ['Home', '/'],
                 ['Services', '/services'],
-                ['My Work', '/my-work'],
+                ['Our Work', '/my-work'],
                 ['Demos', '/demos'],
+                ['Reviews', '/reviews'],
                 ['Pricing', '/pricing'],
                 ['About', '/about'],
                 ['Contact', '/contact'],
@@ -50,7 +51,7 @@ export function Footer({ onNavigate }: FooterProps) {
           </div>
 
           <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white">
+            <h3 className="mb-4 font-display text-sm font-semibold tracking-wide text-white">
               Services
             </h3>
             <ul className="space-y-2.5 text-sm text-slate-400">
@@ -61,7 +62,7 @@ export function Footer({ onNavigate }: FooterProps) {
           </div>
 
           <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white">
+            <h3 className="mb-4 font-display text-sm font-semibold tracking-wide text-white">
               Get in touch
             </h3>
             <ul className="space-y-3 text-sm">
@@ -83,19 +84,11 @@ export function Footer({ onNavigate }: FooterProps) {
                   Instagram {BRAND.instagramHandle}
                 </a>
               </li>
-              <li>
-                <a
-                  href={BRAND.calendlyPlaceholder}
-                  className="text-slate-400 transition-colors hover:text-white"
-                >
-                  Schedule a call
-                </a>
-              </li>
             </ul>
             <button
               type="button"
               onClick={() => onNavigate('/contact')}
-              className="mt-5 inline-flex rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-slate-900 transition-colors hover:bg-slate-100"
+              className="mt-5 inline-flex rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-slate-100"
             >
               Start a project
             </button>

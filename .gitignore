@@ -25,3 +25,8 @@ dist-ssr
 
 # Local commit message scratch files used by the Cursor agent
 COMMIT_EDITMSG.tmp
+
+# Env
+.env
+.env.local
+.env.*.local

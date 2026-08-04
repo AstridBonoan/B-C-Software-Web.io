@@ -3,6 +3,7 @@ import { FeaturedWorkSection } from './home/FeaturedWorkSection';
 import { HeroSection } from './home/HeroSection';
 import { IndustriesSection } from './home/IndustriesSection';
 import { ProcessSection } from './home/ProcessSection';
+import { ReviewsSection } from './home/ReviewsSection';
 import { ServicesPreview } from './home/ServicesPreview';
 import { WhyChooseSection } from './home/WhyChooseSection';
 
@@ -12,11 +13,12 @@ interface HomePageProps {
 
 export function HomePage({ onNavigate }: HomePageProps) {
   return (
-    <div className="bg-surface transition-colors duration-300 dark:bg-surface-dark">
+    <div>
       <HeroSection onNavigate={onNavigate} />
       <ServicesPreview onNavigate={onNavigate} />
       <IndustriesSection />
       <FeaturedWorkSection onNavigate={onNavigate} />
+      <ReviewsSection onNavigate={onNavigate} />
       <WhyChooseSection />
       <ProcessSection />
       <CTASection onNavigate={onNavigate} />

@@ -5,7 +5,7 @@ import { Button } from './Button';
 const FORMSPREE_FORM_ID = 'mojggrbk';
 
 export const contactInputClass =
-  'w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 transition-colors focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20 dark:border-white/10 dark:bg-slate-950/80 dark:text-white dark:placeholder-slate-500 dark:focus:border-brand-400 dark:focus:ring-brand-400/20';
+  'w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-ink placeholder-slate-400 transition-colors focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/15 dark:border-white/15 dark:bg-ink/50 dark:text-white dark:placeholder-slate-500 dark:focus:border-brand-400 dark:focus:ring-brand-400/20';
 
 interface ContactFormFieldsProps {
   subject?: string;
@@ -40,14 +40,8 @@ export function ContactFormFields({
 
   if (state.succeeded) {
     return (
-      <div
-        className={
-          compact
-            ? 'rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center dark:border-emerald-800/50 dark:bg-emerald-950/30'
-            : 'rounded-2xl border border-emerald-200 bg-emerald-50 p-8 text-center dark:border-emerald-800/50 dark:bg-emerald-950/30'
-        }
-      >
-        <p className="font-semibold text-emerald-800 dark:text-emerald-300">
+      <div className="border border-slate-200 bg-surface p-8 text-center dark:border-white/10 dark:bg-white/5">
+        <p className="font-medium text-ink dark:text-slate-100">
           Thank you—I received your message and will reply within 1–2 business days.
         </p>
         <Button variant="secondary" onClick={handleSendAnother} className="mt-4">
@@ -56,6 +50,8 @@ export function ContactFormFields({
       </div>
     );
   }
+
+  const labelClass = 'mb-2 block text-sm font-medium text-ink dark:text-white';
 
   return (
     <form
@@ -66,7 +62,7 @@ export function ContactFormFields({
     >
       <div className={compact ? 'grid grid-cols-1 gap-4 sm:grid-cols-2' : 'grid grid-cols-1 gap-5 sm:grid-cols-2'}>
         <div>
-          <label htmlFor="contact-name" className="mb-2 block text-sm font-semibold text-slate-900 dark:text-white">
+          <label htmlFor="contact-name" className={labelClass}>
             Name
           </label>
           <input
@@ -80,7 +76,7 @@ export function ContactFormFields({
           <ValidationError prefix="Name" field="name" errors={state.errors} className="mt-1 text-sm text-red-600" />
         </div>
         <div>
-          <label htmlFor="contact-email" className="mb-2 block text-sm font-semibold text-slate-900 dark:text-white">
+          <label htmlFor="contact-email" className={labelClass}>
             Email
           </label>
           <input
@@ -97,7 +93,7 @@ export function ContactFormFields({
 
       {!compact && (
         <div>
-          <label htmlFor="contact-subject" className="mb-2 block text-sm font-semibold text-slate-900 dark:text-white">
+          <label htmlFor="contact-subject" className={labelClass}>
             Subject
           </label>
           <input
@@ -119,7 +115,7 @@ export function ContactFormFields({
       )}
 
       <div>
-        <label htmlFor="contact-message" className="mb-2 block text-sm font-semibold text-slate-900 dark:text-white">
+        <label htmlFor="contact-message" className={labelClass}>
           Message
         </label>
         <textarea
@@ -135,10 +131,10 @@ export function ContactFormFields({
 
       <ValidationError
         errors={state.errors}
-        className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm font-medium text-red-800 dark:border-red-800 dark:bg-red-950/30 dark:text-red-300"
+        className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm font-medium text-red-800 dark:border-red-800 dark:bg-red-950/30 dark:text-red-300"
       />
 
-      <Button type="submit" disabled={state.submitting} className="w-full">
+      <Button type="submit" disabled={state.submitting} className="w-full sm:w-auto">
         {state.submitting ? 'Sending...' : compact ? 'Request consultation' : 'Send message'}
       </Button>
     </form>

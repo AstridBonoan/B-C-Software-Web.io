@@ -9,6 +9,35 @@ export const BRAND = {
   calendlyPlaceholder: '#schedule-intro-call',
 } as const;
 
+/** Rotating hero copy — first entry matches BRAND.headline / BRAND.tagline. */
+export const HERO_SLIDES = [
+  {
+    headline: 'Modern Digital Solutions for Growing Businesses',
+    tagline:
+      'Custom websites, software, and automation designed to help businesses operate smarter and look more professional online.',
+  },
+  {
+    headline: 'Websites and Software Built to Win Local Customers',
+    tagline:
+      'We design clear paths from search to contact—so shops, restaurants, and service businesses convert more of the traffic they already earn.',
+  },
+  {
+    headline: 'From First Click to Booked Appointment—Designed for Results',
+    tagline:
+      'Booking flows, forms, and follow-ups that reduce phone tag and help your team spend time on work that pays.',
+  },
+  {
+    headline: 'Clean Tech for Owners Who Need Tools That Just Work',
+    tagline:
+      'No bloated platforms or jargon—just reliable sites and systems you can run without a full-time IT team.',
+  },
+  {
+    headline: 'Professional Online Presence Without the Agency Overhead',
+    tagline:
+      'Direct partnership with our team: thoughtful design, modern build quality, and support that stays personal.',
+  },
+] as const;
+
 export const INDUSTRIES = [
   { name: 'Restaurants', icon: 'utensils' },
   { name: 'Auto Shops', icon: 'wrench' },

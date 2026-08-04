@@ -10,28 +10,29 @@ interface ServicesPreviewProps {
 
 export function ServicesPreview({ onNavigate }: ServicesPreviewProps) {
   return (
-    <section id="services" aria-labelledby="services-heading" className="section-padding">
+    <section id="services" aria-labelledby="services-heading" className="section-padding bg-white dark:bg-surface-dark">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
           eyebrow="Services"
           title="Digital solutions that move your business forward"
           description="Practical services with clear outcomes—built for owners who want results, not technical overwhelm."
+          align="left"
         />
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="divide-y divide-slate-200 border-y border-slate-200 dark:divide-white/10 dark:border-white/10">
           {SERVICES.map((service, index) => (
-            <AnimatedSection key={service.title} delay={index * 0.03}>
-              <article className="card-hover group flex h-full flex-col rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-slate-900/75 sm:p-7">
-                <span className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-200/80 bg-slate-50 text-slate-700 transition-colors group-hover:border-brand-200 group-hover:bg-brand-50 group-hover:text-brand-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:group-hover:border-brand-500/30 dark:group-hover:bg-brand-500/10 dark:group-hover:text-brand-400">
-                  <ServiceIcon name={service.icon} className="h-6 w-6" />
+            <AnimatedSection key={service.title} delay={index * 0.02}>
+              <article className="grid gap-4 py-6 sm:grid-cols-[auto_1fr] sm:gap-6 sm:py-7 lg:grid-cols-[auto_minmax(0,14rem)_1fr] lg:items-start">
+                <span className="inline-flex h-10 w-10 items-center justify-center text-brand-600 dark:text-brand-400">
+                  <ServiceIcon name={service.icon} className="h-5 w-5" />
                 </span>
                 <h3
                   id={index === 0 ? 'services-heading' : undefined}
-                  className="text-lg font-bold text-slate-900 dark:text-white"
+                  className="font-display text-base font-semibold text-ink dark:text-white sm:text-lg"
                 >
                   {service.title}
                 </h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                <p className="text-sm leading-relaxed text-ink-muted dark:text-slate-400 sm:col-span-2 lg:col-span-1 lg:col-start-3">
                   {service.description}
                 </p>
               </article>
@@ -39,11 +40,11 @@ export function ServicesPreview({ onNavigate }: ServicesPreviewProps) {
           ))}
         </div>
 
-        <AnimatedSection className="mt-12 flex justify-center">
+        <div className="mt-10">
           <Button variant="secondary" onClick={() => onNavigate('/services')}>
             View service details
           </Button>
-        </AnimatedSection>
+        </div>
       </div>
     </section>
   );
