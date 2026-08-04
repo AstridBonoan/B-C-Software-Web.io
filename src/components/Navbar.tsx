@@ -22,7 +22,7 @@ const NAV_LINKS = [
 
 export function Navbar({ isDark, onThemeToggle, pathname, onNavigate }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const logoMarkSrc = `${import.meta.env.BASE_URL}logo-mark-${isDark ? 'dark' : 'light'}.png`;
+  const logoMarkSrc = `${import.meta.env.BASE_URL}logo-mark-${isDark ? 'dark' : 'light'}.png?v=3`;
 
   const closeMenu = () => setIsMenuOpen(false);
 
@@ -74,9 +74,9 @@ export function Navbar({ isDark, onThemeToggle, pathname, onNavigate }: NavbarPr
           <button
             type="button"
             onClick={goToHome}
-            className="flex min-w-0 shrink-0 items-center gap-2"
+            className="flex shrink-0 items-center gap-2"
           >
-            <img src={logoMarkSrc} alt="" className="h-8 w-auto shrink-0" />
+            <img src={logoMarkSrc} alt="" className="h-9 w-auto shrink-0" />
             <span className="hidden font-display text-sm font-semibold tracking-tight text-ink whitespace-nowrap dark:text-white lg:inline">
               B&amp;C Software
             </span>
@@ -190,7 +190,7 @@ export function Navbar({ isDark, onThemeToggle, pathname, onNavigate }: NavbarPr
         >
           <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4 dark:border-white/10">
             <div className="flex items-center gap-2.5">
-              <img src={logoMarkSrc} alt="" className="h-8 w-auto" />
+              <img src={logoMarkSrc} alt="" className="h-9 w-auto" />
               <span className="font-display font-semibold text-ink dark:text-white">Menu</span>
             </div>
             <button

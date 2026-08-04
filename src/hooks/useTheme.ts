@@ -1,11 +1,21 @@
 import { useState, useEffect } from 'react';
 
+function readIsDark(): boolean {
+  if (typeof document !== 'undefined' && document.documentElement.classList.contains('dark')) {
+    return true;
+  }
+  try {
+    return localStorage.getItem('theme') === 'dark';
+  } catch {
+    return false;
+  }
+}
+
 export function useTheme() {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(readIsDark);
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    const shouldBeDark = savedTheme === 'dark';
+    const shouldBeDark = readIsDark();
     setIsDark(shouldBeDark);
     updateTheme(shouldBeDark);
   }, []);

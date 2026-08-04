@@ -87,10 +87,11 @@ for (let i = 0; i < data.length; i += 4) {
 
   if (!isBrandBlue(r, g, b)) {
     // Navy B, wordmark, and distressed speckles → solid white on dark UIs.
-    // Brand blue &C stays as-is.
+    // Brand blue &C stays as-is. Full alpha keeps the B crisp at small mobile sizes.
     darkBuf[i] = WORDMARK_DARK.r;
     darkBuf[i + 1] = WORDMARK_DARK.g;
     darkBuf[i + 2] = WORDMARK_DARK.b;
+    if (a > 40) darkBuf[i + 3] = 255;
   }
 }
 
@@ -145,6 +146,25 @@ const darkMarkPng = await sharp(darkPng)
 
 await sharp(lightMarkPng).trim(trimOpts).png({ compressionLevel: 9 }).toFile(markLightOutPath);
 await sharp(darkMarkPng).trim(trimOpts).png({ compressionLevel: 9 }).toFile(markDarkOutPath);
+
+// Keep a little transparent padding on the left so the B isn't clipped in tight nav layouts.
+const MARK_LEFT_PAD = 12;
+for (const markPath of [markLightOutPath, markDarkOutPath]) {
+  const meta = await sharp(markPath).metadata();
+  await sharp(markPath)
+    .extend({
+      left: MARK_LEFT_PAD,
+      right: 0,
+      top: 0,
+      bottom: 0,
+      background: { r: 0, g: 0, b: 0, alpha: 0 },
+    })
+    .png({ compressionLevel: 9 })
+    .toFile(markPath);
+  console.log(
+    `Padded ${path.relative(projectRoot, markPath)} (+${MARK_LEFT_PAD}px left, ${meta.width}→${meta.width + MARK_LEFT_PAD})`,
+  );
+}
 
 console.log(`Wrote ${path.relative(projectRoot, lightOutPath)} (light, full lockup)`);
 console.log(`Wrote ${path.relative(projectRoot, darkOutPath)} (dark, full lockup)`);

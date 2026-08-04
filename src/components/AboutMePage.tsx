@@ -110,9 +110,18 @@ export function AboutMePage({ onNavigate }: AboutMePageProps) {
                 </p>
                 <a
                   href={member.phoneHref}
-                  className="mt-3 inline-flex text-sm font-medium text-ink-muted transition-colors hover:text-ink dark:text-slate-400 dark:hover:text-white"
+                  className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-brand-600 underline decoration-brand-600/40 underline-offset-4 transition-colors hover:text-brand-700 hover:decoration-brand-700 dark:text-brand-400 dark:decoration-brand-400/50 dark:hover:text-brand-300 dark:hover:decoration-brand-300"
+                  aria-label={`Call ${member.name} at ${member.phone}`}
                 >
-                  {member.phone}
+                  <svg
+                    className="h-4 w-4 shrink-0"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden
+                  >
+                    <path d="M2 3.5A1.5 1.5 0 0 1 3.5 2h2.879a1.5 1.5 0 0 1 1.44 1.097l.722 2.527a1.5 1.5 0 0 1-.55 1.575l-1.149.862a11.042 11.042 0 0 0 5.097 5.097l.862-1.149a1.5 1.5 0 0 1 1.575-.55l2.527.722A1.5 1.5 0 0 1 18 13.621V16.5a1.5 1.5 0 0 1-1.5 1.5H15C7.82 18 2 12.18 2 5V3.5Z" />
+                  </svg>
+                  Call {member.phone}
                 </a>
 
                 <div className="mt-5 space-y-3 text-base leading-relaxed text-ink-muted dark:text-slate-300">

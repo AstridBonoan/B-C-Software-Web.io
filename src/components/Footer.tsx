@@ -5,7 +5,7 @@ interface FooterProps {
 }
 
 export function Footer({ onNavigate }: FooterProps) {
-  const logoMarkSrc = `${import.meta.env.BASE_URL}logo-mark-dark.png`;
+  const logoMarkSrc = `${import.meta.env.BASE_URL}logo-mark-dark.png?v=3`;
   const year = new Date().getFullYear();
 
   return (
