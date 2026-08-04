@@ -33,7 +33,7 @@ export function Services() {
           Not sure where to start?
         </h3>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-muted dark:text-slate-400">
-          Tell me about your business and goals—I&rsquo;ll recommend the right mix of website,
+          Tell us about your business and goals—we&rsquo;ll recommend the right mix of website,
           tools, and automation for your budget and timeline.
         </p>
       </div>

@@ -24,7 +24,7 @@ export function CTASection({ onNavigate }: CTASectionProps) {
             Let&rsquo;s modernize your business
           </h2>
           <p className="mt-4 text-base leading-relaxed text-slate-300">
-            Share your goals—I&rsquo;ll respond with clear next steps. Free consultation, no obligation.
+            Share your goals—we&rsquo;ll respond with clear next steps. Free consultation, no obligation.
           </p>
         </div>
         <button

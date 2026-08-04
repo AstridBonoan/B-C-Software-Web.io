@@ -14,8 +14,8 @@ const TEAM = [
     photoAlt: 'Astrid Bonoan',
     initials: 'AB',
     bio: [
-      'I\u2019m a co-founder of B&C Software & Web, where I help small businesses and growing teams ship websites, apps, and internal tools that actually move the needle \u2014 with clean code, fast pages, and design that earns the user\u2019s trust on the first scroll.',
-      'My work spans full-stack web development, workflow automation, and product design. I enjoy partnering with founders who want a thoughtful technical partner, not just a contractor.',
+      'Astrid is a co-founder of B&C Software & Web, where he helps small businesses and growing teams ship websites, apps, and internal tools that actually move the needle \u2014 with clean code, fast pages, and design that earns the user\u2019s trust on the first scroll.',
+      'His work spans full-stack web development, workflow automation, and product design. He enjoys partnering with founders who want a thoughtful technical partner, not just a contractor.',
     ],
   },
   {
@@ -27,8 +27,8 @@ const TEAM = [
     photoAlt: 'Charlie Flores',
     initials: 'CF',
     bio: [
-      'I\u2019m a co-founder of B&C Software & Web, focused on helping local businesses get found, stay consistent across platforms, and turn online attention into real customers.',
-      'I lead brand positioning, local listings, and go-to-market strategy so every site and tool we ship has a clear path to visibility and growth.',
+      'Charlie is a co-founder of B&C Software & Web, focused on helping local businesses get found, stay consistent across platforms, and turn online attention into real customers.',
+      'He leads brand positioning, local listings, and go-to-market strategy so every site and tool we ship has a clear path to visibility and growth.',
     ],
   },
 ] as const;

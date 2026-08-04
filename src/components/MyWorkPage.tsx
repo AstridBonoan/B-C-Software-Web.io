@@ -72,7 +72,7 @@ export function MyWorkPage({ onNavigate }: MyWorkPageProps) {
             Want something similar?
           </h2>
           <p className="mt-2 max-w-lg text-sm text-ink-muted dark:text-slate-400">
-            Tell me about your business and goals—I&rsquo;ll recommend the right mix of website,
+            Tell us about your business and goals—we&rsquo;ll recommend the right mix of website,
             tools, and automation.
           </p>
           <Button onClick={() => onNavigate('/contact')} className="mt-5">

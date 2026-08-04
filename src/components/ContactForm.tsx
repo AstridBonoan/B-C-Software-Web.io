@@ -11,7 +11,7 @@ export function ContactForm({ subject = '' }: ContactFormProps) {
     <PageShell
       eyebrow="Contact"
       title="Start your project with confidence"
-      description="Tell me about your business and what you want to improve. I respond with clear, honest next steps."
+      description="Tell us about your business and what you want to improve. We respond with clear, honest next steps."
     >
       <div className="mx-auto max-w-2xl">
         <div className="mb-8 flex flex-wrap gap-x-6 gap-y-3 border-b border-slate-200 pb-8 dark:border-white/10">

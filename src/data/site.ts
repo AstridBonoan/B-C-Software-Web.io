@@ -92,19 +92,19 @@ export const PROCESS_STEPS = [
     step: '01',
     title: 'Consultation',
     description:
-      'I learn your goals, customers, and timeline—in plain language, with no pressure.',
+      'We learn your goals, customers, and timeline—in plain language, with no pressure.',
   },
   {
     step: '02',
     title: 'Design & Development',
     description:
-      'You review progress as I build. I refine design, content, and tools until it feels right.',
+      'You review progress as we build. We refine design, content, and tools until it feels right.',
   },
   {
     step: '03',
     title: 'Launch & Support',
     description:
-      'Go live with confidence. I help with launch, updates, and ongoing support when you need it.',
+      'Go live with confidence. We help with launch, updates, and ongoing support when you need it.',
   },
 ] as const;
 

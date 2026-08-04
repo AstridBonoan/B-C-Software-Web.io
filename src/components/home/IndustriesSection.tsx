@@ -12,8 +12,8 @@ export function IndustriesSection() {
         <div id="industries-heading">
           <SectionHeader
             eyebrow="Industries"
-            title="Built for the businesses I know best"
-            description="Whether you run a shop, restaurant, or service company—I design for how your customers actually find and choose you."
+            title="Built for the businesses we know best"
+            description="Whether you run a shop, restaurant, or service company—we design for how your customers actually find and choose you."
             align="left"
           />
         </div>

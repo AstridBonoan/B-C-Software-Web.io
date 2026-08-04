@@ -42,7 +42,7 @@ export function ContactFormFields({
     return (
       <div className="border border-slate-200 bg-surface p-8 text-center dark:border-white/10 dark:bg-white/5">
         <p className="font-medium text-ink dark:text-slate-100">
-          Thank you—I received your message and will reply within 1–2 business days.
+          Thank you—we received your message and will reply within 1–2 business days.
         </p>
         <Button variant="secondary" onClick={handleSendAnother} className="mt-4">
           Send another message
@@ -124,7 +124,7 @@ export function ContactFormFields({
           required
           rows={compact ? 4 : 5}
           className={`${contactInputClass} resize-none`}
-          placeholder="Tell me about your business and what you'd like to improve..."
+          placeholder="Tell us about your business and what you'd like to improve..."
         />
         <ValidationError prefix="Message" field="message" errors={state.errors} className="mt-1 text-sm text-red-600" />
       </div>

@@ -14,7 +14,7 @@ export function WhyChooseSection() {
             align="left"
             eyebrow="Why B&C Software & Web"
             title="Focused on your growth—not jargon"
-            description="I combine modern design, reliable technology, and direct communication so you always know where your project stands."
+            description="We combine modern design, reliable technology, and direct communication so you always know where your project stands."
           />
 
           <ul className="divide-y divide-slate-200 border-y border-slate-200 dark:divide-white/10 dark:border-white/10">
