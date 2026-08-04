@@ -77,9 +77,6 @@ export function Navbar({ isDark, onThemeToggle, pathname, onNavigate }: NavbarPr
             className="flex shrink-0 items-center gap-2"
           >
             <img src={logoMarkSrc} alt="" className="h-9 w-auto shrink-0" />
-            <span className="hidden font-display text-sm font-semibold tracking-tight text-ink whitespace-nowrap dark:text-white lg:inline">
-              B&amp;C Software
-            </span>
             <span className="sr-only">{BRAND.name}</span>
           </button>
 
