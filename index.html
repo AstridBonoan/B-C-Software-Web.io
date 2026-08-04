@@ -8,7 +8,8 @@
       name="description"
       content="B&C Software & Web helps growing businesses with custom websites, software, and automation—built solo, with direct communication from start to finish."
     />
-    <meta name="theme-color" content="#F5F7FA" />
+    <meta name="theme-color" content="#F5F7FA" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0B1220" media="(prefers-color-scheme: dark)" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="B&C Software & Web | Modern Digital Solutions for Growing Businesses" />
     <meta
@@ -24,13 +25,14 @@
       rel="stylesheet"
     />
     <title>B&C Software & Web | Modern Digital Solutions for Growing Businesses</title>
-    <script type="module" crossorigin src="/B-C-Software-Web.io/assets/index-Blmas3sC.js"></script>
-    <link rel="stylesheet" crossorigin href="/B-C-Software-Web.io/assets/index-_Hb3ej_F.css">
+    <script type="module" crossorigin src="/B-C-Software-Web.io/assets/index-B4QrBkxq.js"></script>
+    <link rel="stylesheet" crossorigin href="/B-C-Software-Web.io/assets/index-czn-OfMA.css">
   </head>
   <body>
     <script>
-      document.documentElement.classList.remove('dark');
-      localStorage.removeItem('theme');
+      if (localStorage.getItem('theme') === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
     </script>
     <div id="root"></div>
   </body>
