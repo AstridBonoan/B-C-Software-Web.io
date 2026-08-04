@@ -28,10 +28,10 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
     <section
       id="hero"
       aria-labelledby="hero-heading"
-      className="relative overflow-hidden border-b border-slate-200/80 bg-white pt-20 sm:pt-24"
+      className="relative overflow-hidden border-b border-slate-200/80 bg-white pt-20 dark:border-white/10 dark:bg-surface-dark sm:pt-24"
     >
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(15,118,110,0.06),_transparent_55%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(15,118,110,0.06),_transparent_55%)] dark:bg-[radial-gradient(ellipse_at_top_right,_rgba(45,212,191,0.08),_transparent_50%)]"
         aria-hidden
       />
 
@@ -42,7 +42,7 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="max-w-3xl"
         >
-          <p className="font-display text-base font-semibold tracking-tight text-brand-600 sm:text-lg">
+          <p className="font-display text-base font-semibold tracking-tight text-brand-600 dark:text-brand-400 sm:text-lg">
             {BRAND.name}
           </p>
 
@@ -58,11 +58,11 @@ export function HeroSection({ onNavigate }: HeroSectionProps) {
             >
               <h1
                 id="hero-heading"
-                className="font-display text-[2.35rem] font-semibold leading-[1.1] tracking-tight text-ink sm:text-5xl sm:leading-[1.08] lg:text-6xl"
+                className="font-display text-[2.35rem] font-semibold leading-[1.1] tracking-tight text-ink sm:text-5xl sm:leading-[1.08] lg:text-6xl dark:text-white"
               >
                 {slide.headline}
               </h1>
-              <p className="mt-6 max-w-xl text-base leading-relaxed text-ink-muted sm:text-lg">
+              <p className="mt-6 max-w-xl text-base leading-relaxed text-ink-muted sm:text-lg dark:text-slate-400">
                 {slide.tagline}
               </p>
             </motion.div>

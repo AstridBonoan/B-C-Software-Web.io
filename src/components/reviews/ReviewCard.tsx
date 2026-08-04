@@ -18,7 +18,7 @@ function StarRow({ rating }: { rating: number }) {
       {Array.from({ length: 5 }, (_, i) => (
         <svg
           key={i}
-          className={`h-3.5 w-3.5 ${i < rating ? 'text-amber-400' : 'text-slate-300'}`}
+          className={`h-3.5 w-3.5 ${i < rating ? 'text-amber-400' : 'text-slate-300 dark:text-slate-600'}`}
           viewBox="0 0 20 20"
           fill="currentColor"
           aria-hidden
@@ -45,37 +45,37 @@ export function ReviewCard({ review, truncated = false, onReadFull }: ReviewCard
   const dateLabel = formatReviewDate(review.created_at);
 
   return (
-    <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
+    <article className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/[0.04] sm:p-7">
       <div className="flex items-start gap-3">
         <span
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-ink font-display text-sm font-semibold text-white"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-ink font-display text-sm font-semibold text-white dark:bg-white dark:text-ink"
           aria-hidden
         >
           {initial}
         </span>
         <div className="min-w-0 flex-1">
           <StarRow rating={review.rating} />
-          <p className="mt-3 text-base leading-relaxed text-ink-muted">
+          <p className="mt-3 text-base leading-relaxed text-ink-muted dark:text-slate-300">
             &ldquo;{preview}&rdquo;
           </p>
           {truncated && onReadFull && review.message.length > 110 ? (
             <button
               type="button"
               onClick={() => onReadFull(review)}
-              className="mt-3 text-sm font-semibold text-ink underline-offset-2 hover:underline"
+              className="mt-3 text-sm font-semibold text-ink underline-offset-2 hover:underline dark:text-white"
             >
               Read full review
               <span aria-hidden>→</span>
             </button>
           ) : null}
-          <p className="mt-5 text-sm font-medium text-ink">
+          <p className="mt-5 text-sm font-medium text-ink dark:text-white">
             {review.name}
             {dateLabel ? (
-              <span className="font-normal text-ink-muted"> – {dateLabel}</span>
+              <span className="font-normal text-ink-muted dark:text-slate-400"> – {dateLabel}</span>
             ) : null}
           </p>
           {review.company ? (
-            <p className="mt-0.5 text-sm text-ink-muted">{review.company}</p>
+            <p className="mt-0.5 text-sm text-ink-muted dark:text-slate-400">{review.company}</p>
           ) : null}
         </div>
       </div>

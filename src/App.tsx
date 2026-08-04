@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTheme } from './hooks/useTheme'
 import { Navbar } from './components/Navbar'
 import { HomePage } from './components/HomePage'
 import { Services } from './components/Services'
@@ -12,6 +13,7 @@ import { ReviewsPage } from './components/ReviewsPage'
 import './index.css'
 
 function App() {
+  const { isDark, toggleTheme } = useTheme()
   const [contactSubject, setContactSubject] = useState('')
   const getRoute = () => {
     const raw = window.location.hash.replace('#', '') || '/'
@@ -40,8 +42,13 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <Navbar pathname={pathname} onNavigate={navigateTo} />
+    <div className="min-h-screen bg-white transition-colors duration-300 dark:bg-surface-dark">
+      <Navbar
+        isDark={isDark}
+        onThemeToggle={toggleTheme}
+        pathname={pathname}
+        onNavigate={navigateTo}
+      />
       <main>
         {pathname === '/' && <HomePage onNavigate={navigateTo} />}
         {pathname === '/services' && <Services />}

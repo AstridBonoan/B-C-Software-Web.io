@@ -59,14 +59,14 @@ export function ReviewForm({ onSubmitted }: ReviewFormProps) {
   if (succeeded) {
     return (
       <div className="py-10 text-center">
-        <p className="font-display text-xl font-semibold text-ink">Thanks for your review</p>
-        <p className="mt-2 text-sm text-ink-muted">
+        <p className="font-display text-xl font-semibold text-ink dark:text-white">Thanks for your review</p>
+        <p className="mt-2 text-sm text-ink-muted dark:text-slate-400">
           It will appear on the site after we approve it.
         </p>
         <button
           type="button"
           onClick={() => setSucceeded(false)}
-          className="mt-6 text-sm font-semibold text-brand-600 hover:underline"
+          className="mt-6 text-sm font-semibold text-brand-600 hover:underline dark:text-brand-400"
         >
           Write another
         </button>
@@ -77,7 +77,7 @@ export function ReviewForm({ onSubmitted }: ReviewFormProps) {
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-xl space-y-8" noValidate>
       <div className="text-center">
-        <p className="text-sm font-medium text-ink">Rate your experience</p>
+        <p className="text-sm font-medium text-ink dark:text-white">Rate your experience</p>
         <div
           className="mt-3 flex items-center justify-center gap-1"
           role="radiogroup"
@@ -101,7 +101,7 @@ export function ReviewForm({ onSubmitted }: ReviewFormProps) {
               >
                 <svg
                   className={`h-9 w-9 sm:h-10 sm:w-10 ${
-                    filled ? 'text-amber-400' : 'text-slate-300'
+                    filled ? 'text-amber-400' : 'text-slate-300 dark:text-slate-600'
                   }`}
                   viewBox="0 0 20 20"
                   fill="currentColor"
@@ -113,7 +113,7 @@ export function ReviewForm({ onSubmitted }: ReviewFormProps) {
             );
           })}
         </div>
-        <p className="mt-2 min-h-[1.25rem] text-sm text-ink-muted">
+        <p className="mt-2 min-h-[1.25rem] text-sm text-ink-muted dark:text-slate-400">
           {displayRating > 0 ? ratingLabels[displayRating] : ' '}
         </p>
       </div>
@@ -128,7 +128,7 @@ export function ReviewForm({ onSubmitted }: ReviewFormProps) {
           rows={4}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          className="w-full resize-none border-0 border-b border-slate-300 bg-transparent px-0 py-3 text-base text-ink placeholder:text-slate-400 focus:border-ink focus:outline-none focus:ring-0"
+          className="w-full resize-none border-0 border-b border-slate-300 bg-transparent px-0 py-3 text-base text-ink placeholder:text-slate-400 focus:border-ink focus:outline-none focus:ring-0 dark:border-white/20 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-white"
           placeholder="Share details of your own experience at this place"
         />
       </div>
@@ -142,7 +142,7 @@ export function ReviewForm({ onSubmitted }: ReviewFormProps) {
           maxLength={80}
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full border-0 border-b border-slate-300 bg-transparent px-0 py-3 text-base text-ink placeholder:text-slate-400 focus:border-ink focus:outline-none focus:ring-0"
+          className="w-full border-0 border-b border-slate-300 bg-transparent px-0 py-3 text-base text-ink placeholder:text-slate-400 focus:border-ink focus:outline-none focus:ring-0 dark:border-white/20 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-white"
           placeholder="Your name"
           autoComplete="name"
         />
@@ -153,13 +153,13 @@ export function ReviewForm({ onSubmitted }: ReviewFormProps) {
           maxLength={120}
           value={company}
           onChange={(e) => setCompany(e.target.value)}
-          className="w-full border-0 border-b border-slate-300 bg-transparent px-0 py-3 text-base text-ink placeholder:text-slate-400 focus:border-ink focus:outline-none focus:ring-0"
+          className="w-full border-0 border-b border-slate-300 bg-transparent px-0 py-3 text-base text-ink placeholder:text-slate-400 focus:border-ink focus:outline-none focus:ring-0 dark:border-white/20 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-white"
           placeholder="Business name (optional)"
           autoComplete="organization"
         />
       </div>
 
-      {error ? <p className="text-sm font-medium text-red-700">{error}</p> : null}
+      {error ? <p className="text-sm font-medium text-red-700 dark:text-red-400">{error}</p> : null}
 
       <div className="flex justify-end pt-2">
         <Button type="submit" disabled={submitting} className="min-w-[8rem]">

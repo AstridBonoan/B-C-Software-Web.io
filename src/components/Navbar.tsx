@@ -3,6 +3,8 @@ import { BRAND } from '../data/site';
 import { Button } from './ui/Button';
 
 interface NavbarProps {
+  isDark: boolean;
+  onThemeToggle: () => void;
   pathname: string;
   onNavigate: (path: string) => void;
 }
@@ -18,9 +20,9 @@ const NAV_LINKS = [
   { path: '/contact', label: 'Contact' },
 ] as const;
 
-export function Navbar({ pathname, onNavigate }: NavbarProps) {
+export function Navbar({ isDark, onThemeToggle, pathname, onNavigate }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const logoMarkSrc = `${import.meta.env.BASE_URL}logo-mark-light.png`;
+  const logoMarkSrc = `${import.meta.env.BASE_URL}logo-mark-${isDark ? 'dark' : 'light'}.png`;
 
   const closeMenu = () => setIsMenuOpen(false);
 
@@ -62,8 +64,8 @@ export function Navbar({ pathname, onNavigate }: NavbarProps) {
   const navLinkClass = (path: string) =>
     'block w-full rounded-lg px-4 py-3.5 text-left text-base font-medium transition-colors ' +
     (pathname === path
-      ? 'bg-slate-100 text-ink'
-      : 'text-ink hover:bg-slate-50');
+      ? 'bg-slate-100 text-ink dark:bg-white/10 dark:text-white'
+      : 'text-ink hover:bg-slate-50 dark:text-slate-100 dark:hover:bg-white/5');
 
   return (
     <>
@@ -75,7 +77,7 @@ export function Navbar({ pathname, onNavigate }: NavbarProps) {
             className="flex min-w-0 shrink-0 items-center gap-2"
           >
             <img src={logoMarkSrc} alt="" className="h-8 w-auto shrink-0" />
-            <span className="hidden font-display text-sm font-semibold tracking-tight text-ink whitespace-nowrap lg:inline">
+            <span className="hidden font-display text-sm font-semibold tracking-tight text-ink whitespace-nowrap dark:text-white lg:inline">
               B&amp;C Software
             </span>
             <span className="sr-only">{BRAND.name}</span>
@@ -95,14 +97,16 @@ export function Navbar({ pathname, onNavigate }: NavbarProps) {
                     onClick={() => onNavigate(link.path)}
                     className={
                       'whitespace-nowrap rounded-md px-2 py-1.5 text-sm font-medium transition-colors lg:px-2.5 lg:text-[15px] xl:px-3 ' +
-                      (isActive ? 'text-ink' : 'text-ink-muted hover:text-ink')
+                      (isActive
+                        ? 'text-ink dark:text-white'
+                        : 'text-ink-muted hover:text-ink dark:text-slate-400 dark:hover:text-white')
                     }
                   >
                     {link.label}
                     <span
                       className={
                         'mt-1 block h-px w-full ' +
-                        (isActive ? 'bg-brand-600' : 'bg-transparent')
+                        (isActive ? 'bg-brand-600 dark:bg-brand-400' : 'bg-transparent')
                       }
                       aria-hidden
                     />
@@ -113,6 +117,27 @@ export function Navbar({ pathname, onNavigate }: NavbarProps) {
           </nav>
 
           <div className="ml-auto flex shrink-0 items-center gap-2">
+            <button
+              onClick={onThemeToggle}
+              type="button"
+              className="hidden rounded-lg border border-slate-200 p-2.5 text-ink-muted transition-colors hover:bg-slate-50 hover:text-ink dark:border-white/10 dark:text-slate-300 dark:hover:bg-white/10 md:flex"
+              aria-label="Toggle theme"
+            >
+              {isDark ? (
+                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden>
+                  <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                </svg>
+              ) : (
+                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden>
+                  <path
+                    fillRule="evenodd"
+                    d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm5.657-9.193a1 1 0 00-1.414 0l-.707.707A1 1 0 005.05 13.536l.707.707a1 1 0 001.414-1.414l-.707-.707zm2.828 2.829a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              )}
+            </button>
+
             <Button
               onClick={() => onNavigate('/contact')}
               className="hidden px-3 py-2 text-xs md:inline-flex lg:px-4 lg:text-sm"
@@ -123,7 +148,7 @@ export function Navbar({ pathname, onNavigate }: NavbarProps) {
             <button
               onClick={() => setIsMenuOpen((open) => !open)}
               type="button"
-              className="inline-flex rounded-lg border border-slate-200 p-2.5 text-ink transition-colors hover:bg-slate-50 md:hidden"
+              className="inline-flex rounded-lg border border-slate-200 p-2.5 text-ink transition-colors hover:bg-slate-50 dark:border-white/10 dark:text-white dark:hover:bg-white/10 md:hidden"
               aria-expanded={isMenuOpen}
               aria-controls="mobile-nav-menu"
               aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
@@ -159,19 +184,19 @@ export function Navbar({ pathname, onNavigate }: NavbarProps) {
           role="dialog"
           aria-modal="true"
           aria-label="Site navigation"
-          className={`absolute inset-y-0 right-0 flex w-full max-w-sm flex-col border-l border-slate-200 bg-white shadow-xl transition-transform duration-300 ease-out ${
+          className={`absolute inset-y-0 right-0 flex w-full max-w-sm flex-col border-l border-slate-200 bg-white shadow-xl transition-transform duration-300 ease-out dark:border-white/10 dark:bg-ink ${
             isMenuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
-          <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
+          <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4 dark:border-white/10">
             <div className="flex items-center gap-2.5">
               <img src={logoMarkSrc} alt="" className="h-8 w-auto" />
-              <span className="font-display font-semibold text-ink">Menu</span>
+              <span className="font-display font-semibold text-ink dark:text-white">Menu</span>
             </div>
             <button
               type="button"
               onClick={closeMenu}
-              className="rounded-lg p-2 text-ink-muted hover:bg-slate-100"
+              className="rounded-lg p-2 text-ink-muted hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"
               aria-label="Close menu"
             >
               <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
@@ -192,7 +217,14 @@ export function Navbar({ pathname, onNavigate }: NavbarProps) {
             </ul>
           </nav>
 
-          <div className="border-t border-slate-200 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+          <div className="space-y-3 border-t border-slate-200 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] dark:border-white/10">
+            <button
+              type="button"
+              onClick={onThemeToggle}
+              className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 py-3 text-sm font-semibold text-ink transition-colors hover:bg-slate-50 dark:border-white/10 dark:text-slate-200 dark:hover:bg-white/5"
+            >
+              {isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            </button>
             <Button onClick={() => handleNavigate('/contact')} className="w-full">
               Start a Project
             </Button>

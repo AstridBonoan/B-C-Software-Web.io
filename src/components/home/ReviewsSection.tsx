@@ -41,7 +41,7 @@ export function ReviewsSection({ onNavigate }: ReviewsSectionProps) {
     <section
       id="reviews"
       aria-labelledby="reviews-heading"
-      className="section-padding border-y border-slate-200/80 bg-surface"
+      className="section-padding border-y border-slate-200/80 bg-surface dark:border-white/10 dark:bg-ink/40"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
@@ -52,11 +52,11 @@ export function ReviewsSection({ onNavigate }: ReviewsSectionProps) {
         />
 
         {loading ? (
-          <p className="text-sm text-ink-muted">Loading reviews...</p>
+          <p className="text-sm text-ink-muted dark:text-slate-400">Loading reviews...</p>
         ) : reviews.length > 0 ? (
           <ReviewsCarousel reviews={reviews} />
         ) : (
-          <p id="reviews-heading" className="max-w-xl text-base leading-relaxed text-ink-muted">
+          <p id="reviews-heading" className="max-w-xl text-base leading-relaxed text-ink-muted dark:text-slate-400">
             Client reviews will appear here once approved. If you&rsquo;ve worked with us, we&rsquo;d
             love to hear how it went.
           </p>

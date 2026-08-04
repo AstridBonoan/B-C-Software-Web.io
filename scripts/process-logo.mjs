@@ -3,8 +3,8 @@
 // Reads `public/logo.png` (the source: dark "B" + blue-gradient "&C" mark +
 // dark "SOFTWARE & WEB" wordmark on a solid white canvas) and writes:
 //
-//   - public/logo-dark.png  -> transparent bg + light wordmark/B   (use on dark UIs)
-//   - public/logo-light.png -> transparent bg + dark wordmark/B    (use on light UIs)
+//   - public/logo-dark.png  -> transparent bg + white B/wordmark + blue &C (use on dark UIs)
+//   - public/logo-light.png -> transparent bg + dark wordmark/B + blue &C (use on light UIs)
 //
 // Saturated blue gradient pixels ("&C") are preserved in both variants.
 //
@@ -27,10 +27,16 @@ const BG_LUMA_CUTOFF = 245;
 const BG_LUMA_FADE_START = 220;
 // Saturation below this = grayscale-ish (navy B + wordmark), not the blue &C.
 const GRAYSCALE_SAT = 35;
-// Dark variant remaps the navy mark/wordmark to near-white for dark pages.
-const WORDMARK_DARK = { r: 248, g: 250, b: 252 };
+// Dark variant remaps the navy mark/wordmark to solid white for dark pages.
+const WORDMARK_DARK = { r: 255, g: 255, b: 255 };
 
 const luma = (r, g, b) => 0.299 * r + 0.587 * g + 0.114 * b;
+
+// True brand blue (&C gradient), not navy speckles / distressed texture on the B.
+const isBrandBlue = (r, g, b) => {
+  const sat = Math.max(r, g, b) - Math.min(r, g, b);
+  return sat > 50 && b - r > 60 && b > 90;
+};
 
 const { data, info } = await sharp(sourcePath)
   .ensureAlpha()
@@ -72,19 +78,20 @@ for (let i = 0; i < data.length; i += 4) {
     const t = (BG_LUMA_CUTOFF - l) / (BG_LUMA_CUTOFF - BG_LUMA_FADE_START);
     const faded = Math.round(255 * t);
     lightBuf[i + 3] = Math.min(a, faded);
+    darkBuf[i] = WORDMARK_DARK.r;
+    darkBuf[i + 1] = WORDMARK_DARK.g;
+    darkBuf[i + 2] = WORDMARK_DARK.b;
     darkBuf[i + 3] = Math.min(a, faded);
     continue;
   }
 
-  if (sat < GRAYSCALE_SAT && l < BG_LUMA_FADE_START) {
-    // Dark navy / gray mark + wordmark.
-    // Light variant: keep as-is (already dark for white pages).
-    // Dark variant: remap to near-white so it reads on dark UIs.
+  if (!isBrandBlue(r, g, b)) {
+    // Navy B, wordmark, and distressed speckles → solid white on dark UIs.
+    // Brand blue &C stays as-is.
     darkBuf[i] = WORDMARK_DARK.r;
     darkBuf[i + 1] = WORDMARK_DARK.g;
     darkBuf[i + 2] = WORDMARK_DARK.b;
   }
-  // Saturated blue (&C) preserved in both.
 }
 
 const baseInfo = {

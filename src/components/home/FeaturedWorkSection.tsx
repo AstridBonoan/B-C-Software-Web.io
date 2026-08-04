@@ -28,7 +28,7 @@ export function FeaturedWorkSection({ onNavigate }: FeaturedWorkSectionProps) {
                   index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : ''
                 }`}
               >
-                <div className="overflow-hidden rounded-lg border border-slate-200 bg-slate-50">
+                <div className="overflow-hidden rounded-lg border border-slate-200 bg-slate-50 dark:border-white/10 dark:bg-white/5">
                   <img
                     src={`${clientImageBase}${project.image}`}
                     alt={project.imageAlt}
