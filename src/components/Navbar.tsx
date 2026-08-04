@@ -112,7 +112,7 @@ export function Navbar({ pathname, onNavigate }: NavbarProps) {
             </div>
           </nav>
 
-          <div className="flex shrink-0 items-center gap-2">
+          <div className="ml-auto flex shrink-0 items-center gap-2">
             <Button
               onClick={() => onNavigate('/contact')}
               className="hidden px-3 py-2 text-xs md:inline-flex lg:px-4 lg:text-sm"
