@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 
+/** Light mode is the site default. Dark only when the user explicitly chose it. */
 function readIsDark(): boolean {
-  if (typeof document !== 'undefined' && document.documentElement.classList.contains('dark')) {
-    return true;
-  }
   try {
     return localStorage.getItem('theme') === 'dark';
   } catch {

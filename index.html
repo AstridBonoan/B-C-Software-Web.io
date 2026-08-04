@@ -28,9 +28,20 @@
   </head>
   <body>
     <script>
-      if (localStorage.getItem('theme') === 'dark') {
-        document.documentElement.classList.add('dark');
-      }
+      // Light is the default. Only enable dark when the user previously chose it.
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+            if (theme !== 'light') localStorage.setItem('theme', 'light');
+          }
+        } catch (_) {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
     </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
