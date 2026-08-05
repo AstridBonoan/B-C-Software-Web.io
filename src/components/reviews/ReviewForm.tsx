@@ -61,7 +61,7 @@ export function ReviewForm({ onSubmitted }: ReviewFormProps) {
       <div className="py-10 text-center">
         <p className="font-display text-xl font-semibold text-ink dark:text-white">Thanks for your review</p>
         <p className="mt-2 text-sm text-ink-muted dark:text-slate-400">
-          It will appear on the site after we approve it.
+          Thanks for sharing—we appreciate your feedback.
         </p>
         <button
           type="button"

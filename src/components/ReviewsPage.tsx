@@ -38,8 +38,7 @@ export function ReviewsPage() {
             What clients say
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-ink-muted dark:text-slate-400">
-            Approved reviews appear in the carousel below. Share your experience—we publish after a
-            quick review.
+            Share your experience with us—we&rsquo;d love to hear how it went.
           </p>
         </div>
 
@@ -58,8 +57,7 @@ export function ReviewsPage() {
             <p className="text-center text-sm text-red-700 dark:text-red-400">{error}</p>
           ) : reviews.length === 0 ? (
             <p className="mx-auto max-w-xl text-center text-sm leading-relaxed text-ink-muted dark:text-slate-400">
-              No published reviews yet. Be the first to share your experience below—or check back
-              soon.
+              No reviews yet. Be the first to share your experience below.
             </p>
           ) : (
             <ReviewsCarousel reviews={reviews} />
@@ -68,9 +66,11 @@ export function ReviewsPage() {
 
         <div className="border-t border-slate-200 pt-12 dark:border-white/10">
           <div className="mx-auto mb-10 max-w-xl text-center">
-            <h2 className="font-display text-2xl font-semibold text-ink dark:text-white">Write a review</h2>
+            <h2 className="font-display text-2xl font-semibold text-ink dark:text-white">
+              Share your experience with us
+            </h2>
             <p className="mt-2 text-sm text-ink-muted dark:text-slate-400">
-              Reviews are moderated before they appear publicly on our website.
+              Tell others what it was like working with B&amp;C Software &amp; Web.
             </p>
           </div>
           <ReviewForm />

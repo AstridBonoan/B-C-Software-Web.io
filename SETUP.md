@@ -35,7 +35,7 @@ VITE_SUPABASE_PUBLISHABLE_KEY=YOUR_SUPABASE_PUBLISHABLE_KEY
 ```
 
 5. Restart the dev server so Vite picks up the env vars.
-6. To publish a review: open **Table Editor → reviews**, set `status` from `pending` to `approved`.
+6. To publish a review: open **Table Editor → reviews**, click the `status` cell, and pick **approved** from the dropdown (options: pending / approved / rejected). Re-run `supabase/reviews.sql` once if your table still has a plain text status field.
 
 For GitHub Pages, add the same `VITE_SUPABASE_*` values as repository secrets / Actions env when you build, or bake them into the hosting environment that runs `npm run build`.
 
