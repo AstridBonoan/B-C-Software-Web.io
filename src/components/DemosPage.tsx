@@ -53,6 +53,16 @@ function industryOptionsFor(filter: FilterId) {
 
 const demos: readonly Demo[] = [
   {
+    image: 'evergreen-residential.png',
+    alt: 'Evergreen Residential Construction homepage with Building Homes Creating Memories headline and project CTAs',
+    title: 'Evergreen Residential Construction',
+    description:
+      'Residential construction marketing site—project showcase, services, testimonials, and a clear path from browse to quote.',
+    href: 'https://astridbonoan.github.io/Residential-Construction/',
+    category: 'websites',
+    industry: 'construction',
+  },
+  {
     image: 'bc-merch-store.png',
     alt: 'B&C Merch Store homepage with Fall Collection hero and Shop the Collection CTA',
     title: 'B&C Merch Store',
