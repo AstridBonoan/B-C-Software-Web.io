@@ -38,7 +38,7 @@ export function ReviewsPage() {
             What clients say
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-ink-muted dark:text-slate-400">
-            Share your experience with us—we&rsquo;d love to hear how it went.
+            Real feedback from clients after launch.
           </p>
         </div>
 
@@ -57,7 +57,7 @@ export function ReviewsPage() {
             <p className="text-center text-sm text-red-700 dark:text-red-400">{error}</p>
           ) : reviews.length === 0 ? (
             <p className="mx-auto max-w-xl text-center text-sm leading-relaxed text-ink-muted dark:text-slate-400">
-              No reviews yet. Be the first to share your experience below.
+              No reviews yet. Be the first to leave one below.
             </p>
           ) : (
             <ReviewsCarousel reviews={reviews} />

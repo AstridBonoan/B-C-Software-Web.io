@@ -47,7 +47,7 @@ export function ReviewsSection({ onNavigate }: ReviewsSectionProps) {
         <SectionHeader
           eyebrow="Reviews"
           title="Trusted by growing businesses"
-          description="Real feedback from clients after launch. Share your experience with us."
+          description="Real feedback from clients after launch."
           align="left"
         />
 
@@ -57,8 +57,7 @@ export function ReviewsSection({ onNavigate }: ReviewsSectionProps) {
           <ReviewsCarousel reviews={reviews} />
         ) : (
           <p id="reviews-heading" className="max-w-xl text-base leading-relaxed text-ink-muted dark:text-slate-400">
-            If you&rsquo;ve worked with us, we&rsquo;d love to hear how it went—share your experience
-            on the reviews page.
+            If you&rsquo;ve worked with us, we&rsquo;d love to hear how it went.
           </p>
         )}
 
