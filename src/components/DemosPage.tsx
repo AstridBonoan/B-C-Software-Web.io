@@ -64,7 +64,7 @@ const demos: readonly Demo[] = [
   },
   {
     image: 'apex-european-motors.png',
-    alt: 'Apex European Motors homepage with luxury garage hero, Precision Service tagline, and Book Service CTA',
+    alt: 'Apex European Motors homepage with European Automotive Atelier headline, garage hero, and Book Service CTA',
     title: 'Apex European Motors',
     description:
       'Premium European auto service site—services, brands, packages, and a clear booking path for high-end shop clients.',
