@@ -73,6 +73,16 @@ const demos: readonly Demo[] = [
     industry: 'auto',
   },
   {
+    image: 'hartwell-pierce-law.png',
+    alt: 'Hartwell & Pierce Law homepage with Fighting for the People Who Need Us Most headline and Free Consultation CTA',
+    title: 'Hartwell & Pierce Law',
+    description:
+      'Personal injury law firm site—practice areas, case results, attorney profiles, and a clear path to schedule a free consultation.',
+    href: 'https://astridbonoan.github.io/Personal-Injury-Law-Firm.io/',
+    category: 'websites',
+    industry: 'legal',
+  },
+  {
     image: 'bc-merch-store.png',
     alt: 'B&C Merch Store homepage with Fall Collection hero and Shop the Collection CTA',
     title: 'B&C Merch Store',
