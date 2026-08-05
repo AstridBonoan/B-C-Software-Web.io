@@ -63,6 +63,16 @@ const demos: readonly Demo[] = [
     industry: 'construction',
   },
   {
+    image: 'apex-european-motors.png',
+    alt: 'Apex European Motors homepage with luxury garage hero, Precision Service tagline, and Book Service CTA',
+    title: 'Apex European Motors',
+    description:
+      'Premium European auto service site—services, brands, packages, and a clear booking path for high-end shop clients.',
+    href: 'https://astridbonoan.github.io/Premium-European-Auto-Service/',
+    category: 'websites',
+    industry: 'auto',
+  },
+  {
     image: 'bc-merch-store.png',
     alt: 'B&C Merch Store homepage with Fall Collection hero and Shop the Collection CTA',
     title: 'B&C Merch Store',
