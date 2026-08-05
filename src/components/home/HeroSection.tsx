@@ -7,7 +7,7 @@ interface HeroSectionProps {
   onNavigate: (path: string) => void;
 }
 
-const ROTATE_MS = 15000;
+const ROTATE_MS = 10000;
 
 export function HeroSection({ onNavigate }: HeroSectionProps) {
   const reduceMotion = useReducedMotion();
