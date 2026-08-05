@@ -28,12 +28,34 @@ function App() {
     return () => window.removeEventListener('hashchange', handleHashChange)
   }, [])
 
+  // After the new page mounts, jump to the top. Instant scroll avoids mobile
+  // getting stuck when smooth-scroll races a shrinking document height.
+  useEffect(() => {
+    const scrollTop = () => {
+      const html = document.documentElement
+      const previous = html.style.scrollBehavior
+      html.style.scrollBehavior = 'auto'
+      window.scrollTo(0, 0)
+      html.scrollTop = 0
+      document.body.scrollTop = 0
+      html.style.scrollBehavior = previous
+    }
+
+    scrollTop()
+    const frame = window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(scrollTop)
+    })
+    return () => window.cancelAnimationFrame(frame)
+  }, [pathname])
+
   const navigateTo = (path: string) => {
     if (getRoute() !== path) {
       window.location.hash = path
       setPathname(path)
-      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
     }
+    // Same route (e.g. Home while already on Home): still return to top.
+    window.scrollTo(0, 0)
   }
 
   const handlePricingSelect = (subject: string) => {
