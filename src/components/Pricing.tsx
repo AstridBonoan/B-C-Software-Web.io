@@ -55,42 +55,75 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
     {
       name: 'Starter',
       price: '$1500',
+      description: 'For businesses launching a smaller online store. Everything needed to launch and start selling online.',
       features: [
-        'Product catalog (up to 15 products)',
+        'Custom UI/UX',
+        'Responsive design',
+        'Product catalog (up to ~10 products)',
+        'Product categories',
+        'Product variations',
         'Shopping cart',
-        'Stripe checkout',
-        'Custom UI',
-        'Mobile Friendly',
+        'Checkout',
+        'Stripe/payment integration',
+        'Basic inventory management',
+        'Basic order management',
         'Order confirmation emails',
+        'Basic shipping configuration',
+        'Basic SEO',
+        'Domain/deployment setup',
       ],
     },
     {
       name: 'Professional',
       price: '$2500',
+      description:
+        'For businesses that need a more robust online store. Includes everything in Starter, plus what you need to operate and grow an established store.',
       features: [
-        'Product catalog (up to 40 products)',
-        'Collections & categories',
-        'Product variants (size, color)',
-        'Shopping cart',
-        'Stripe checkout',
-        'Shipping options',
-        'Inventory tracking',
-        'Order confirmation emails',
+        'Everything in Starter',
+        'Custom UI/UX',
+        'Larger product catalog',
+        'Advanced product variations',
+        'Customer accounts',
+        'Customer dashboard',
+        'Order history',
+        'Coupon/discount system',
+        'Advanced inventory management',
+        'Shipping configuration',
+        'Tax configuration',
+        'Product search',
+        'Product filtering',
+        'Automated customer/order emails',
+        'Sales analytics',
+        'Google Analytics integration',
+        'Additional third-party integrations',
+        'More advanced store administration',
       ],
     },
     {
       name: 'Advanced',
       price: '$4000',
+      description:
+        'For businesses requiring complex e-commerce functionality and integrations. Includes everything in Professional, plus a custom system built around how the business operates.',
       features: [
-        'Unlimited products',
-        'Customer accounts',
-        'Discount codes & promotions',
-        'Admin product dashboard',
-        'Advanced inventory',
-        'Stripe checkout',
-        'Email automation',
-        'Custom UI',
-        'Mobile Friendly',
+        'Everything in Professional',
+        'Custom UI/UX',
+        'Large/complex product catalogs',
+        'Advanced product configuration',
+        'Product bundles/add-ons',
+        'Advanced pricing rules',
+        'Custom checkout workflows',
+        'Advanced shipping logic',
+        'Advanced inventory functionality',
+        'Advanced order management',
+        'Advanced customer functionality',
+        'Custom admin dashboards',
+        'Advanced analytics/reporting',
+        'CRM integrations',
+        'Accounting integrations',
+        'External API integrations',
+        'Automated business workflows',
+        'Custom notifications/automation',
+        'Complex business-specific functionality',
       ],
     },
   ];
@@ -134,7 +167,7 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
     featured = false,
   }: {
     category: string;
-    tier: { name: string; price: string; features: string[] };
+    tier: { name: string; price: string; description?: string; features: string[] };
     featured?: boolean;
   }) => (
     <div
@@ -147,6 +180,11 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
     >
       <h4 className="font-display text-lg font-semibold text-ink dark:text-white">{tier.name}</h4>
       <p className="mt-2 font-display text-3xl font-semibold text-ink dark:text-white">{tier.price}</p>
+      {tier.description ? (
+        <p className="mt-3 text-sm leading-relaxed text-ink-muted dark:text-slate-400">
+          {tier.description}
+        </p>
+      ) : null}
       <ul className="mt-6 flex-grow space-y-2.5">
         {tier.features.map((feature) => (
           <li key={feature} className="flex items-start gap-2.5">
