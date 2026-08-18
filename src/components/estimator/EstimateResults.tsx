@@ -1,5 +1,5 @@
 import { ESTIMATOR_COPY } from '../../data/estimator';
-import type { EstimateResult } from '../../lib/calculateEstimate';
+import { formatUsd, type EstimateResult } from '../../lib/calculateEstimate';
 import { Button } from '../ui/Button';
 
 interface EstimateResultsProps {
@@ -13,23 +13,27 @@ export function EstimateResults({ result, onQuote, onRestart, onBack }: Estimate
   return (
     <div>
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-brand-600 dark:text-brand-400">
-        {ESTIMATOR_COPY.resultsHeading}
+        {result.customQuote ? 'Result' : ESTIMATOR_COPY.resultsHeading}
       </p>
-      <p className="mt-3 font-display text-4xl font-semibold tracking-tight text-ink dark:text-white sm:text-5xl">
-        {result.displayPrice}
-      </p>
-      {result.supportingPrice ? (
-        <p className="mt-2 text-lg font-medium text-ink-muted dark:text-slate-400">{result.supportingPrice}</p>
-      ) : null}
-      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-muted dark:text-slate-400">
-        {ESTIMATOR_COPY.estimateNote}
-      </p>
-
-      {result.customQuote && result.customQuoteNote ? (
-        <p className="mt-4 border border-slate-200 bg-white px-4 py-3 text-sm leading-relaxed text-ink dark:border-white/10 dark:bg-white/5 dark:text-slate-200">
-          {result.customQuoteNote}
-        </p>
-      ) : null}
+      {result.customQuote ? (
+        <>
+          <p className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink dark:text-white sm:text-4xl">
+            {ESTIMATOR_COPY.customQuoteHeading}
+          </p>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-muted dark:text-slate-400 sm:text-base">
+            {result.customQuoteNote ?? ESTIMATOR_COPY.customQuoteBody}
+          </p>
+        </>
+      ) : (
+        <>
+          <p className="mt-3 font-display text-4xl font-semibold tracking-tight text-ink dark:text-white sm:text-5xl">
+            {result.displayPrice}
+          </p>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-ink-muted dark:text-slate-400">
+            {ESTIMATOR_COPY.estimateNote}
+          </p>
+        </>
+      )}
 
       <div className="mt-8 grid gap-8 sm:grid-cols-2">
         <div>
@@ -47,6 +51,30 @@ export function EstimateResults({ result, onQuote, onRestart, onBack }: Estimate
           </p>
         </div>
       </div>
+
+      {!result.customQuote && result.breakdown.length > 0 ? (
+        <div className="mt-8">
+          <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-ink-muted dark:text-slate-400">
+            Breakdown
+          </h3>
+          <ul className="mt-3 divide-y divide-slate-200 border-y border-slate-200 dark:divide-white/10 dark:border-white/10">
+            {result.breakdown.map((line, index) => (
+              <li key={`${line.label}-${index}`} className="flex items-baseline justify-between gap-4 py-2.5 text-sm">
+                <span className="text-ink-muted dark:text-slate-300">{line.label}</span>
+                <span className="shrink-0 font-medium text-ink dark:text-white">
+                  {index === 0 ? formatUsd(line.amount) : `+${formatUsd(line.amount)}`}
+                </span>
+              </li>
+            ))}
+            {result.priceKind === 'exact' && result.total != null ? (
+              <li className="flex items-baseline justify-between gap-4 py-2.5 text-sm font-semibold text-ink dark:text-white">
+                <span>Total</span>
+                <span>{formatUsd(result.total)}</span>
+              </li>
+            ) : null}
+          </ul>
+        </div>
+      ) : null}
 
       <div className="mt-8">
         <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-ink-muted dark:text-slate-400">
@@ -77,13 +105,6 @@ export function EstimateResults({ result, onQuote, onRestart, onBack }: Estimate
         </div>
       ) : null}
 
-      <div className="mt-10 border border-slate-200 bg-white px-5 py-4 dark:border-white/10 dark:bg-white/5">
-        <p className="font-semibold text-ink dark:text-white">{ESTIMATOR_COPY.disclaimerTitle}</p>
-        <p className="mt-1 text-sm leading-relaxed text-ink-muted dark:text-slate-400">
-          {ESTIMATOR_COPY.disclaimerBody}
-        </p>
-      </div>
-
       <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-col gap-3 sm:flex-row">
           <Button variant="ghost" onClick={onBack}>
@@ -94,7 +115,7 @@ export function EstimateResults({ result, onQuote, onRestart, onBack }: Estimate
           </Button>
         </div>
         <Button onClick={onQuote} className="sm:min-w-[12rem]">
-          Get Your Official Quote
+          {result.ctaLabel}
         </Button>
       </div>
     </div>

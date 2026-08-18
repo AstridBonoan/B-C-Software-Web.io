@@ -8,15 +8,16 @@ export const ESTIMATOR_COPY = {
   positioning: 'You have the idea. We build it for you.',
   customBuilt:
     'Every B&C project is custom-built around your needs. This estimator provides a starting estimate based on the features and functionality you select.',
-  resultsHeading: 'Your Estimated Investment',
-  disclaimerTitle: 'This is an estimate, not a final quote.',
-  disclaimerBody:
-    'Your final project price will be determined after we review your requirements and confirm the project scope.',
+  resultsHeading: 'Your Estimated Project Cost',
+  customQuoteHeading: 'Custom Quote Required',
   estimateNote:
-    'This estimate is based on the options you selected. Your final project price will be determined after we discuss your requirements and define the project scope.',
-  customQuoteShort: 'Your project may require a custom quote.',
-  customQuoteApplication:
-    "Your project appears to require a custom development quote. We'll review your requirements with you before providing a final proposal.",
+    'Your estimate is based on the features selected. Final pricing may change if project requirements change or additional functionality is requested.',
+  customQuoteBody:
+    "Your project requires functionality beyond our standard packages. We'd like to learn more about what you're building so we can provide an accurate custom quote.",
+  customQuoteWebsite:
+    "Your project includes functionality beyond our standard website packages. We'll review your requirements and provide a custom quote.",
+  pricedCta: 'Get Your Official Quote',
+  customQuoteCta: "Let's Discuss Your Project",
 } as const;
 
 export const PROJECT_TYPES = [
@@ -175,9 +176,8 @@ export const APP_ADMIN_OPTIONS = [
   { id: 'advanced', label: 'Advanced administration' },
 ] as const;
 
-export type PriceAdjustment = {
-  min: number;
-  max: number;
+export type AddonPrice = {
+  amount: number;
   customQuote?: boolean;
 };
 
@@ -205,90 +205,70 @@ export const ESTIMATOR_PRICING = {
         ] as WebsiteFeatureId[],
       },
     },
-    featureAdjustments: {
-      'contact-form': { min: 150, max: 250 },
-      'lead-forms': { min: 200, max: 350 },
-      'application-forms': { min: 200, max: 350 },
-      'advanced-intake': { min: 300, max: 500 },
-      'quote-forms': { min: 250, max: 400 },
-      'email-automation': { min: 250, max: 450 },
-      stripe: { min: 300, max: 500 },
-      booking: { min: 450, max: 850 },
-      integrations: { min: 300, max: 700 },
-      cms: { min: 400, max: 800 },
-      other: { min: 500, max: 1200, customQuote: true },
-    } satisfies Record<WebsiteFeatureId, PriceAdjustment>,
-    cleanPackagePadding: { min: 0, max: 200 },
-    customQuotePaidAddonCount: 3,
+    addons: {
+      'contact-form': { amount: 0 },
+      'lead-forms': { amount: 250 },
+      'application-forms': { amount: 250 },
+      'advanced-intake': { amount: 300 },
+      'quote-forms': { amount: 300 },
+      'email-automation': { amount: 300 },
+      stripe: { amount: 300 },
+      booking: { amount: 400 },
+      integrations: { amount: 400 },
+      cms: { amount: 400 },
+      other: { amount: 0, customQuote: true },
+    } satisfies Record<WebsiteFeatureId, AddonPrice>,
   },
   ecommerce: {
     base: 2500,
-    catalog: {
-      '1-25': { min: 0, max: 0 },
-      '26-100': { min: 0, max: 300 },
-      '101-500': { min: 200, max: 700 },
-      '500+': { min: 400, max: 1200, customQuote: true },
-    } satisfies Record<(typeof ECOM_CATALOG_OPTIONS)[number]['id'], PriceAdjustment>,
-    variations: {
-      simple: { min: 0, max: 0 },
-      multiple: { min: 150, max: 400 },
-      complex: { min: 500, max: 1200, customQuote: true },
-    } satisfies Record<(typeof ECOM_VARIATION_OPTIONS)[number]['id'], PriceAdjustment>,
-    customerAccounts: { min: 200, max: 400 },
-    coupons: { min: 150, max: 300 },
-    shipping: {
-      basic: { min: 0, max: 0 },
-      advanced: { min: 300, max: 650 },
-      custom: { min: 700, max: 1500, customQuote: true },
-    } satisfies Record<(typeof ECOM_SHIPPING_OPTIONS)[number]['id'], PriceAdjustment>,
-    inventory: {
-      basic: { min: 0, max: 0 },
-      advanced: { min: 250, max: 550 },
-      complex: { min: 800, max: 1800, customQuote: true },
-    } satisfies Record<(typeof ECOM_INVENTORY_OPTIONS)[number]['id'], PriceAdjustment>,
-    integrations: {
-      none: { min: 0, max: 0 },
-      crm: { min: 350, max: 800 },
-      accounting: { min: 350, max: 800 },
-      api: { min: 400, max: 1000 },
-      other: { min: 300, max: 900 },
-    } satisfies Record<(typeof ECOM_INTEGRATION_OPTIONS)[number]['id'], PriceAdjustment>,
-    customFunctionality: { min: 500, max: 1500, customQuote: true },
-    cleanPadding: { min: 0, max: 400 },
+    packageName: 'Custom E-Commerce Website',
+    addons: {
+      customerAccounts: { amount: 400 },
+      coupons: { amount: 250 },
+      shipping: {
+        basic: { amount: 0 },
+        advanced: { amount: 400 },
+        custom: { amount: 0, customQuote: true },
+      } satisfies Record<(typeof ECOM_SHIPPING_OPTIONS)[number]['id'], AddonPrice>,
+      inventory: {
+        basic: { amount: 0 },
+        advanced: { amount: 400 },
+        complex: { amount: 0, customQuote: true },
+      } satisfies Record<(typeof ECOM_INVENTORY_OPTIONS)[number]['id'], AddonPrice>,
+      variations: {
+        simple: { amount: 0 },
+        multiple: { amount: 0 },
+        complex: { amount: 0, customQuote: true },
+      } satisfies Record<(typeof ECOM_VARIATION_OPTIONS)[number]['id'], AddonPrice>,
+      integrations: {
+        none: { amount: 0 },
+        crm: { amount: 400 },
+        accounting: { amount: 400 },
+        api: { amount: 400 },
+        other: { amount: 400 },
+      } satisfies Record<(typeof ECOM_INTEGRATION_OPTIONS)[number]['id'], AddonPrice>,
+    },
     multiIntegrationCustomCount: 2,
+    customFunctionality: { amount: 0, customQuote: true } satisfies AddonPrice,
   },
   webTool: {
-    basic: { price: 1500, rangeMax: 2000 },
-    standard: { price: 2500, rangeMax: 3500 },
-    advanced: { price: 4000, rangeMax: 6500 },
-    custom: { price: 6000, rangeMax: 14000 },
+    basic: { name: 'Basic Custom Web Tool', price: 1500 },
+    standard: { name: 'Standard Custom Web Tool', price: 2500 },
+    advanced: { name: 'Advanced Custom Web Tool', price: 4000 },
   },
   webApp: {
-    base: 5000,
-    scores: {
-      userTypes: { one: 0, two: 1, 'three-plus': 2 },
-      authentication: { none: 0, basic: 1, role: 2, advanced: 3 },
-      storesData: { no: 0, yes: 1 },
-      dashboards: { none: 0, user: 1, admin: 1, multiple: 2 },
-      workflows: { simple: 0, multiple: 1, complex: 3 },
-      automation: { none: 0, basic: 1, multiple: 2, advanced: 3 },
-      admin: { none: 0, basic: 1, advanced: 2 },
+    startingPrice: 5000,
+    packageName: 'Custom Web Application',
+    customQuoteIf: {
+      userTypes: ['three-plus'],
+      authentication: ['role', 'advanced'],
+      dashboards: ['multiple'],
+      workflows: ['multiple', 'complex'],
+      automation: ['multiple', 'advanced'],
+      admin: ['advanced'],
+      integrationIds: ['multiple'],
+      minExtraIntegrations: 2,
     },
-    integrationScore: {
-      none: 0,
-      payment: 1,
-      calendar: 1,
-      crm: 1,
-      accounting: 1,
-      api: 1,
-      multiple: 2,
-    },
-    bands: [
-      { maxScore: 4, low: 5000, high: 8000, customQuote: false },
-      { maxScore: 8, low: 8000, high: 14000, customQuote: true },
-      { maxScore: 12, low: 12000, high: 22000, customQuote: true },
-      { maxScore: Infinity, low: 18000, high: null, customQuote: true },
-    ],
   },
   hosting: {
     website: { amount: 25, label: 'Website Hosting', display: '$25/month' },

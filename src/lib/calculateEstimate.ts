@@ -19,10 +19,15 @@ import {
   WEBSITE_PAGE_OPTIONS,
   getIncludedWebsiteFeatures,
   getWebsitePackageId,
+  type AddonPrice,
   type EstimatorAnswers,
-  type PriceAdjustment,
   type ProjectTypeId,
 } from '../data/estimator';
+
+export interface PriceLine {
+  label: string;
+  amount: number;
+}
 
 export interface EstimateResult {
   projectType: ProjectTypeId;
@@ -30,41 +35,23 @@ export interface EstimateResult {
   packageLabel: string;
   selectedFeatures: string[];
   customNotes: string[];
-  priceKind: 'range' | 'starting' | 'custom';
-  low: number | null;
-  high: number | null;
+  priceKind: 'exact' | 'starting' | 'custom';
+  total: number | null;
   displayPrice: string;
+  breakdown: PriceLine[];
   customQuote: boolean;
   customQuoteNote: string | null;
-  supportingPrice: string | null;
+  ctaLabel: string;
   hostingLabel: string;
   hostingDisplay: string;
 }
 
-function formatUsd(amount: number): string {
+export function formatUsd(amount: number): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
     maximumFractionDigits: 0,
   }).format(amount);
-}
-
-export function formatEstimatePrice(low: number | null, high: number | null, starting = false): string {
-  if (low == null) return 'Custom quote required';
-  if (high == null || high <= low) {
-    return starting ? `Starting at ${formatUsd(low)}` : formatUsd(low);
-  }
-  return `${formatUsd(low)}–${formatUsd(high)}`;
-}
-
-function applyAdjustment(
-  totals: { min: number; max: number; customQuote: boolean },
-  adjustment: PriceAdjustment | undefined,
-) {
-  if (!adjustment) return;
-  totals.min += adjustment.min;
-  totals.max += adjustment.max;
-  if (adjustment.customQuote) totals.customQuote = true;
 }
 
 function labelOf<T extends { id: string; label: string }>(options: readonly T[], id: string | null): string | null {
@@ -86,12 +73,63 @@ export function toggleExclusiveNoneSelection<T extends string>(current: T[], id:
   return toggleExclusiveNone(current, id, noneId);
 }
 
+function addAddon(
+  breakdown: PriceLine[],
+  customQuote: { value: boolean },
+  label: string,
+  addon: AddonPrice | undefined,
+) {
+  if (!addon) return;
+  if (addon.customQuote) {
+    customQuote.value = true;
+    return;
+  }
+  if (addon.amount > 0) {
+    breakdown.push({ label, amount: addon.amount });
+  }
+}
+
+function pricedResult(base: Omit<EstimateResult, 'displayPrice' | 'ctaLabel' | 'total' | 'customQuote'> & {
+  customQuote: boolean;
+  breakdown: PriceLine[];
+}): EstimateResult {
+  const total = base.breakdown.reduce((sum, line) => sum + line.amount, 0);
+
+  if (base.customQuote) {
+    return {
+      ...base,
+      priceKind: 'custom',
+      total: null,
+      displayPrice: ESTIMATOR_COPY.customQuoteHeading,
+      breakdown: [],
+      ctaLabel: ESTIMATOR_COPY.customQuoteCta,
+    };
+  }
+
+  if (base.priceKind === 'starting') {
+    return {
+      ...base,
+      total: base.breakdown[0]?.amount ?? null,
+      displayPrice: `Starting at ${formatUsd(base.breakdown[0]?.amount ?? 0)}`,
+      ctaLabel: ESTIMATOR_COPY.customQuoteCta,
+    };
+  }
+
+  return {
+    ...base,
+    total,
+    displayPrice: formatUsd(total),
+    ctaLabel: ESTIMATOR_COPY.pricedCta,
+  };
+}
+
 function estimateWebsite(answers: EstimatorAnswers): EstimateResult {
   const pageCount = answers.website.pageCount ?? '1-3';
   const packageId = getWebsitePackageId(pageCount);
   const included = getIncludedWebsiteFeatures(pageCount);
   const extras = answers.website.features.filter((id) => !included.includes(id));
   const selectedFeatures: string[] = [];
+  const customQuote = { value: packageId === 'custom' };
 
   const pageLabel = labelOf(WEBSITE_PAGE_OPTIONS, pageCount);
   if (pageLabel) selectedFeatures.push(pageLabel);
@@ -109,64 +147,48 @@ function estimateWebsite(answers: EstimatorAnswers): EstimateResult {
     customNotes.push(answers.website.otherDescription.trim());
   }
 
-  const totals = { min: 0, max: 0, customQuote: packageId === 'custom' };
-
-  if (packageId === 'custom') {
-    totals.min = ESTIMATOR_PRICING.website.packages.advanced.price;
-    totals.max = ESTIMATOR_PRICING.website.packages.advanced.price;
-  } else {
-    const pkg = ESTIMATOR_PRICING.website.packages[packageId];
-    totals.min = pkg.price;
-    totals.max = pkg.price;
-  }
-
-  for (const featureId of extras) {
-    applyAdjustment(totals, ESTIMATOR_PRICING.website.featureAdjustments[featureId]);
-  }
-
-  if (extras.length >= ESTIMATOR_PRICING.website.customQuotePaidAddonCount) {
-    totals.customQuote = true;
-  }
-
-  if (extras.length === 0 && packageId !== 'custom') {
-    totals.min += ESTIMATOR_PRICING.website.cleanPackagePadding.min;
-    totals.max += ESTIMATOR_PRICING.website.cleanPackagePadding.max;
-  }
-
   const packageLabel =
     packageId === 'custom'
       ? 'Custom Website'
       : `${ESTIMATOR_PRICING.website.packages[packageId].name} Website`;
 
-  return {
+  const breakdown: PriceLine[] = [];
+  if (packageId !== 'custom') {
+    breakdown.push({
+      label: packageLabel,
+      amount: ESTIMATOR_PRICING.website.packages[packageId].price,
+    });
+  }
+
+  for (const featureId of extras) {
+    const feature = WEBSITE_FEATURES.find((item) => item.id === featureId);
+    addAddon(breakdown, customQuote, feature?.label ?? featureId, ESTIMATOR_PRICING.website.addons[featureId]);
+  }
+
+  return pricedResult({
     projectType: 'website',
     projectTypeLabel: 'Website',
     packageLabel,
     selectedFeatures,
     customNotes,
-    priceKind: totals.customQuote ? 'custom' : 'range',
-    low: totals.min,
-    high: totals.max,
-    displayPrice: totals.customQuote && packageId === 'custom'
-      ? 'Custom quote required'
-      : formatEstimatePrice(totals.min, totals.max),
-    customQuote: totals.customQuote,
-    customQuoteNote: totals.customQuote ? ESTIMATOR_COPY.customQuoteShort : null,
-    supportingPrice: packageId === 'custom' ? `Starting at ${formatUsd(totals.min)}` : null,
+    priceKind: 'exact',
+    breakdown,
+    customQuote: customQuote.value,
+    customQuoteNote: customQuote.value ? ESTIMATOR_COPY.customQuoteWebsite : null,
     hostingLabel: ESTIMATOR_PRICING.hosting.website.label,
     hostingDisplay: ESTIMATOR_PRICING.hosting.website.display,
-  };
+  });
 }
 
 function estimateEcommerce(answers: EstimatorAnswers): EstimateResult {
   const ecom = answers.ecommerce;
-  const totals = {
-    min: ESTIMATOR_PRICING.ecommerce.base,
-    max: ESTIMATOR_PRICING.ecommerce.base,
-    customQuote: false,
-  };
+  const customQuote = { value: false };
+  const breakdown: PriceLine[] = [
+    { label: ESTIMATOR_PRICING.ecommerce.packageName, amount: ESTIMATOR_PRICING.ecommerce.base },
+  ];
+  const selectedFeatures: string[] = [ESTIMATOR_PRICING.ecommerce.packageName];
+  const addons = ESTIMATOR_PRICING.ecommerce.addons;
 
-  const selectedFeatures: string[] = ['Custom store baseline'];
   const catalogLabel = labelOf(ECOM_CATALOG_OPTIONS, ecom.catalogSize);
   const variationLabel = labelOf(ECOM_VARIATION_OPTIONS, ecom.variations);
   const shippingLabel = labelOf(ECOM_SHIPPING_OPTIONS, ecom.shipping);
@@ -179,12 +201,11 @@ function estimateEcommerce(answers: EstimatorAnswers): EstimateResult {
   if (shippingLabel) selectedFeatures.push(shippingLabel);
   if (inventoryLabel) selectedFeatures.push(inventoryLabel);
 
-  if (ecom.catalogSize) applyAdjustment(totals, ESTIMATOR_PRICING.ecommerce.catalog[ecom.catalogSize]);
-  if (ecom.variations) applyAdjustment(totals, ESTIMATOR_PRICING.ecommerce.variations[ecom.variations]);
-  if (ecom.customerAccounts) applyAdjustment(totals, ESTIMATOR_PRICING.ecommerce.customerAccounts);
-  if (ecom.coupons) applyAdjustment(totals, ESTIMATOR_PRICING.ecommerce.coupons);
-  if (ecom.shipping) applyAdjustment(totals, ESTIMATOR_PRICING.ecommerce.shipping[ecom.shipping]);
-  if (ecom.inventory) applyAdjustment(totals, ESTIMATOR_PRICING.ecommerce.inventory[ecom.inventory]);
+  if (ecom.variations) addAddon(breakdown, customQuote, variationLabel ?? 'Product variations', addons.variations[ecom.variations]);
+  if (ecom.customerAccounts) addAddon(breakdown, customQuote, 'Customer accounts', addons.customerAccounts);
+  if (ecom.coupons) addAddon(breakdown, customQuote, 'Coupons/discounts', addons.coupons);
+  if (ecom.shipping) addAddon(breakdown, customQuote, shippingLabel ?? 'Shipping', addons.shipping[ecom.shipping]);
+  if (ecom.inventory) addAddon(breakdown, customQuote, inventoryLabel ?? 'Inventory', addons.inventory[ecom.inventory]);
 
   const extraIntegrations = ecom.integrations.filter((id) => id !== 'none');
   if (extraIntegrations.length === 0) {
@@ -192,44 +213,41 @@ function estimateEcommerce(answers: EstimatorAnswers): EstimateResult {
   } else {
     for (const id of extraIntegrations) {
       const option = ECOM_INTEGRATION_OPTIONS.find((item) => item.id === id);
-      if (option) selectedFeatures.push(`${option.label} integration`);
-      applyAdjustment(totals, ESTIMATOR_PRICING.ecommerce.integrations[id]);
+      const label = option ? `${option.label} integration` : id;
+      selectedFeatures.push(label);
+      addAddon(breakdown, customQuote, label, addons.integrations[id]);
     }
     if (extraIntegrations.length >= ESTIMATOR_PRICING.ecommerce.multiIntegrationCustomCount) {
-      totals.customQuote = true;
+      customQuote.value = true;
     }
   }
 
   if (ecom.needsCustom) {
     selectedFeatures.push('Additional custom functionality');
-    applyAdjustment(totals, ESTIMATOR_PRICING.ecommerce.customFunctionality);
+    addAddon(
+      breakdown,
+      customQuote,
+      'Additional custom functionality',
+      ESTIMATOR_PRICING.ecommerce.customFunctionality,
+    );
   }
 
   const customNotes: string[] = [];
   if (ecom.customDescription.trim()) customNotes.push(ecom.customDescription.trim());
 
-  const hasComplexity =
-    totals.min > ESTIMATOR_PRICING.ecommerce.base || totals.max > ESTIMATOR_PRICING.ecommerce.base;
-  if (!hasComplexity) {
-    totals.max += ESTIMATOR_PRICING.ecommerce.cleanPadding.max;
-  }
-
-  return {
+  return pricedResult({
     projectType: 'ecommerce',
     projectTypeLabel: 'E-Commerce Website',
-    packageLabel: 'E-Commerce Website',
+    packageLabel: ESTIMATOR_PRICING.ecommerce.packageName,
     selectedFeatures,
     customNotes,
-    priceKind: totals.customQuote ? 'custom' : 'starting',
-    low: totals.min,
-    high: totals.max,
-    displayPrice: formatEstimatePrice(totals.min, totals.max, true),
-    customQuote: totals.customQuote,
-    customQuoteNote: totals.customQuote ? ESTIMATOR_COPY.customQuoteShort : null,
-    supportingPrice: null,
+    priceKind: 'exact',
+    breakdown,
+    customQuote: customQuote.value,
+    customQuoteNote: customQuote.value ? ESTIMATOR_COPY.customQuoteBody : null,
     hostingLabel: ESTIMATOR_PRICING.hosting.website.label,
     hostingDisplay: ESTIMATOR_PRICING.hosting.website.display,
-  };
+  });
 }
 
 function estimateWebTool(answers: EstimatorAnswers): EstimateResult {
@@ -251,66 +269,59 @@ function estimateWebTool(answers: EstimatorAnswers): EstimateResult {
     tier = 'standard';
   }
 
-  const pricing = ESTIMATOR_PRICING.webTool[tier];
   const selectedFeatures = selected.map((feature) => feature.label);
   const customNotes: string[] = [];
   if (answers.webTool.otherDescription.trim()) {
     customNotes.push(answers.webTool.otherDescription.trim());
   }
 
-  const packageNames = {
-    basic: 'Basic Custom Web Tool',
-    standard: 'Standard Custom Web Tool',
-    advanced: 'Advanced Custom Web Tool',
-    custom: 'Custom Web Tool',
-  } as const;
+  if (tier === 'custom') {
+    return pricedResult({
+      projectType: 'web-tool',
+      projectTypeLabel: 'Custom Web Tool',
+      packageLabel: 'Custom Web Tool',
+      selectedFeatures: selectedFeatures.length ? selectedFeatures : ['Focused tool functionality'],
+      customNotes,
+      priceKind: 'custom',
+      breakdown: [],
+      customQuote: true,
+      customQuoteNote: ESTIMATOR_COPY.customQuoteBody,
+      hostingLabel: ESTIMATOR_PRICING.hosting.application.label,
+      hostingDisplay: ESTIMATOR_PRICING.hosting.application.display,
+    });
+  }
 
-  const starting = tier === 'advanced' || tier === 'custom';
-
-  return {
+  const pkg = ESTIMATOR_PRICING.webTool[tier];
+  return pricedResult({
     projectType: 'web-tool',
     projectTypeLabel: 'Custom Web Tool',
-    packageLabel: packageNames[tier],
+    packageLabel: pkg.name,
     selectedFeatures: selectedFeatures.length ? selectedFeatures : ['Focused tool functionality'],
     customNotes,
-    priceKind: tier === 'custom' ? 'custom' : starting ? 'starting' : 'range',
-    low: pricing.price,
-    high: pricing.rangeMax,
-    displayPrice: formatEstimatePrice(pricing.price, pricing.rangeMax, starting),
-    customQuote: tier === 'custom',
-    customQuoteNote: tier === 'custom' ? ESTIMATOR_COPY.customQuoteShort : null,
-    supportingPrice: null,
+    priceKind: 'exact',
+    breakdown: [{ label: pkg.name, amount: pkg.price }],
+    customQuote: false,
+    customQuoteNote: null,
     hostingLabel: ESTIMATOR_PRICING.hosting.application.label,
     hostingDisplay: ESTIMATOR_PRICING.hosting.application.display,
-  };
+  });
 }
 
 function estimateWebApp(answers: EstimatorAnswers): EstimateResult {
   const app = answers.webApp;
-  const scores = ESTIMATOR_PRICING.webApp.scores;
-  let score = 0;
-
-  if (app.userTypes) score += scores.userTypes[app.userTypes];
-  if (app.authentication) score += scores.authentication[app.authentication];
-  if (app.storesData === true) score += scores.storesData.yes;
-  if (app.dashboards) score += scores.dashboards[app.dashboards];
-  if (app.workflows) score += scores.workflows[app.workflows];
-  if (app.automation) score += scores.automation[app.automation];
-  if (app.admin) score += scores.admin[app.admin];
-  if (app.customRequirements.trim().length > 20) score += 1;
-
+  const rules = ESTIMATOR_PRICING.webApp.customQuoteIf;
   const integrations = app.integrations.filter(Boolean);
-  if (integrations.includes('multiple') || integrations.filter((id) => id !== 'none').length >= 2) {
-    score += 2;
-  } else {
-    for (const id of integrations) {
-      score += ESTIMATOR_PRICING.webApp.integrationScore[id];
-    }
-  }
+  const extraIntegrations = integrations.filter((id) => id !== 'none');
 
-  const band =
-    ESTIMATOR_PRICING.webApp.bands.find((item) => score <= item.maxScore) ??
-    ESTIMATOR_PRICING.webApp.bands[ESTIMATOR_PRICING.webApp.bands.length - 1];
+  const exceedsScope =
+    (app.userTypes !== null && (rules.userTypes as readonly string[]).includes(app.userTypes)) ||
+    (app.authentication !== null && (rules.authentication as readonly string[]).includes(app.authentication)) ||
+    (app.dashboards !== null && (rules.dashboards as readonly string[]).includes(app.dashboards)) ||
+    (app.workflows !== null && (rules.workflows as readonly string[]).includes(app.workflows)) ||
+    (app.automation !== null && (rules.automation as readonly string[]).includes(app.automation)) ||
+    (app.admin !== null && (rules.admin as readonly string[]).includes(app.admin)) ||
+    extraIntegrations.some((id) => (rules.integrationIds as readonly string[]).includes(id)) ||
+    extraIntegrations.length >= rules.minExtraIntegrations;
 
   const selectedFeatures: string[] = [];
   const pushLabel = (label: string | null) => {
@@ -325,7 +336,6 @@ function estimateWebApp(answers: EstimatorAnswers): EstimateResult {
   if (dashboardLabel) selectedFeatures.push(`Dashboards: ${dashboardLabel}`);
   pushLabel(labelOf(APP_WORKFLOW_OPTIONS, app.workflows));
 
-  const extraIntegrations = integrations.filter((id) => id !== 'none');
   if (extraIntegrations.length === 0) {
     selectedFeatures.push('No additional integrations');
   } else {
@@ -345,25 +355,35 @@ function estimateWebApp(answers: EstimatorAnswers): EstimateResult {
   const customNotes: string[] = [];
   if (app.customRequirements.trim()) customNotes.push(app.customRequirements.trim());
 
-  const customQuote = true;
-  const displayPrice = formatEstimatePrice(band.low, band.high, band.high == null);
+  if (exceedsScope) {
+    return pricedResult({
+      projectType: 'web-app',
+      projectTypeLabel: 'Custom Web Application',
+      packageLabel: ESTIMATOR_PRICING.webApp.packageName,
+      selectedFeatures,
+      customNotes,
+      priceKind: 'custom',
+      breakdown: [],
+      customQuote: true,
+      customQuoteNote: ESTIMATOR_COPY.customQuoteBody,
+      hostingLabel: ESTIMATOR_PRICING.hosting.application.label,
+      hostingDisplay: ESTIMATOR_PRICING.hosting.application.display,
+    });
+  }
 
-  return {
+  return pricedResult({
     projectType: 'web-app',
     projectTypeLabel: 'Custom Web Application',
-    packageLabel: 'Custom Web Application',
+    packageLabel: ESTIMATOR_PRICING.webApp.packageName,
     selectedFeatures,
     customNotes,
-    priceKind: band.high == null ? 'custom' : 'range',
-    low: band.low,
-    high: band.high,
-    displayPrice,
-    customQuote,
-    customQuoteNote: ESTIMATOR_COPY.customQuoteApplication,
-    supportingPrice: null,
+    priceKind: 'starting',
+    breakdown: [{ label: ESTIMATOR_PRICING.webApp.packageName, amount: ESTIMATOR_PRICING.webApp.startingPrice }],
+    customQuote: false,
+    customQuoteNote: null,
     hostingLabel: ESTIMATOR_PRICING.hosting.application.label,
     hostingDisplay: ESTIMATOR_PRICING.hosting.application.display,
-  };
+  });
 }
 
 export function calculateEstimate(answers: EstimatorAnswers): EstimateResult | null {
@@ -389,25 +409,35 @@ export function buildInquiryPayload(result: EstimateResult): { subject: string; 
   const lines = [
     `I'd like an official quote for a ${result.packageLabel}.`,
     '',
-    `Estimated investment: ${result.displayPrice}`,
-    '',
-    'Selected details:',
-    ...result.selectedFeatures.map((item) => `• ${item}`),
+    `Estimated project cost: ${result.displayPrice}`,
   ];
+
+  if (project) {
+    lines.splice(1, 0, `Project type: ${project.title}`);
+  }
+
+  if (result.breakdown.length > 0) {
+    lines.push('', 'Breakdown:');
+    for (const line of result.breakdown) {
+      lines.push(`• ${line.label}: ${formatUsd(line.amount)}`);
+    }
+    if (result.total != null) {
+      lines.push(`Total: ${formatUsd(result.total)}`);
+    }
+  }
+
+  lines.push('', 'Selected details:', ...result.selectedFeatures.map((item) => `• ${item}`));
 
   if (result.customNotes.length) {
     lines.push('', 'Additional notes:', ...result.customNotes.map((note) => `• ${note}`));
   }
 
-  lines.push(
-    '',
-    `Hosting: ${result.hostingDisplay}`,
-    '',
-    'This came from the B&C Cost Estimator. It is an estimate, not a final quote.',
-  );
+  lines.push('', `Hosting: ${result.hostingDisplay}`);
 
-  if (project) {
-    lines.splice(1, 0, `Project type: ${project.title}`);
+  if (result.customQuote) {
+    lines.push('', result.customQuoteNote ?? ESTIMATOR_COPY.customQuoteBody);
+  } else {
+    lines.push('', ESTIMATOR_COPY.estimateNote);
   }
 
   return { subject, message: lines.join('\n') };
