@@ -144,4 +144,16 @@ export const CLIENT_WORK = [
       'Tamay Enterprises project cost estimator showing the project type selection step and multi-step progress bar',
     href: 'https://estimator.tamayenterprises.com/',
   },
+  {
+    title: 'Management System',
+    client: 'Tamay Enterprises',
+    industry: 'Construction',
+    problem: 'Give staff and clients one secure place to manage jobs, instead of scattered messages and spreadsheets',
+    description:
+      'Custom management portal with staff tools and a client sign-in—account types for homeowners and employees, password recovery, and a branded interface aligned to their operations.',
+    image: 'tamay-management.png',
+    imageAlt:
+      'Tamay Enterprises Management System sign-in page with company logo, staff and client access, and create-account options',
+    href: 'https://management.tamayenterprises.com/sign-in',
+  },
 ] as const;
