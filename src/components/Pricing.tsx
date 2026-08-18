@@ -22,7 +22,7 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
     {
       name: 'Basic',
       price: '$500',
-      features: ['1-3 Pages', 'Custom UI', 'Mobile Friendly', 'Contact Form'],
+      features: ['1-3 Pages', 'Custom UI', 'Mobile Friendly', 'Contact Form', 'Hosting included'],
     },
     {
       name: 'Standard',
@@ -33,6 +33,7 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
         'Mobile Friendly',
         'Contact Form',
         'Lead & application forms',
+        'Hosting included',
       ],
     },
     {
@@ -47,6 +48,7 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
         'Light Integrations',
         'Email Automation',
         'Basic Stripe Checkout',
+        'Hosting included',
       ],
     },
   ];
@@ -71,6 +73,7 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
         'Basic shipping configuration',
         'Basic SEO',
         'Domain/deployment setup',
+        'Hosting included',
       ],
     },
     {
@@ -97,6 +100,7 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
         'Google Analytics integration',
         'Additional third-party integrations',
         'More advanced store administration',
+        'Hosting included',
       ],
     },
     {
@@ -124,6 +128,7 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
         'Automated business workflows',
         'Custom notifications/automation',
         'Complex business-specific functionality',
+        'Hosting included',
       ],
     },
   ];
@@ -137,6 +142,7 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
         'Data Collection & Automation',
         'Streamlined Workflows',
         'Basic Integration',
+        'Hosting included',
       ],
     },
     {
@@ -147,6 +153,7 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
         'Payment Processing',
         'Calendar & Email Integration',
         'Confirmations & Reminders',
+        'Hosting included',
       ],
     },
     {
@@ -157,6 +164,7 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
         'Multi-user Dashboards',
         'Complex Workflows',
         'Advanced Integrations',
+        'Hosting included',
       ],
     },
   ];
@@ -345,7 +353,7 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
               Hourly rate
             </p>
             <p className="mt-1 font-display text-4xl font-semibold text-ink dark:text-white">
-              $80
+              $30
               <span className="text-xl font-medium text-ink-muted dark:text-slate-400">/hr</span>
             </p>
             <ul className="mt-6 space-y-2.5">
