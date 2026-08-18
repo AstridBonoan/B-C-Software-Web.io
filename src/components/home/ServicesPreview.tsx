@@ -40,9 +40,12 @@ export function ServicesPreview({ onNavigate }: ServicesPreviewProps) {
           ))}
         </div>
 
-        <div className="mt-10">
+        <div className="mt-10 flex flex-col gap-3 sm:flex-row">
           <Button variant="secondary" onClick={() => onNavigate('/services')}>
             View service details
+          </Button>
+          <Button variant="ghost" onClick={() => onNavigate('/cost-estimator')}>
+            Estimate your project
           </Button>
         </div>
       </div>

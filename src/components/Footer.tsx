@@ -34,6 +34,7 @@ export function Footer({ onNavigate }: FooterProps) {
                 ['Demos', '/demos'],
                 ['Reviews', '/reviews'],
                 ['Pricing', '/pricing'],
+                ['Cost Estimator', '/cost-estimator'],
                 ['About', '/about'],
                 ['Contact', '/contact'],
               ].map(([label, path]) => (

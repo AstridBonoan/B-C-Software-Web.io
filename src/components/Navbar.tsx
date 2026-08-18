@@ -17,6 +17,7 @@ const NAV_LINKS = [
   { path: '/demos', label: 'Demos' },
   { path: '/reviews', label: 'Reviews' },
   { path: '/pricing', label: 'Pricing' },
+  { path: '/cost-estimator', label: 'Cost Estimator' },
   { path: '/contact', label: 'Contact' },
 ] as const;
 
@@ -70,7 +71,7 @@ export function Navbar({ isDark, onThemeToggle, pathname, onNavigate }: NavbarPr
   return (
     <>
       <header className="fixed top-0 z-50 w-full nav-bar">
-        <div className="mx-auto flex h-14 max-w-[90rem] items-center gap-3 px-4 sm:h-16 sm:px-5 lg:gap-4 lg:px-6 xl:px-8">
+        <div className="mx-auto flex min-h-14 max-w-[90rem] items-center gap-3 px-4 py-2 sm:min-h-16 sm:px-5 lg:gap-4 lg:px-6 xl:px-8">
           <button
             type="button"
             onClick={goToHome}
@@ -93,7 +94,7 @@ export function Navbar({ isDark, onThemeToggle, pathname, onNavigate }: NavbarPr
                     type="button"
                     onClick={() => onNavigate(link.path)}
                     className={
-                      'whitespace-nowrap rounded-md px-2 py-1.5 text-sm font-medium transition-colors lg:px-2.5 lg:text-[15px] xl:px-3 ' +
+                      'whitespace-nowrap rounded-md px-1.5 py-1.5 text-[13px] font-medium transition-colors lg:px-2 lg:text-sm xl:px-2.5 xl:text-[15px] ' +
                       (isActive
                         ? 'text-ink dark:text-white'
                         : 'text-ink-muted hover:text-ink dark:text-slate-400 dark:hover:text-white')

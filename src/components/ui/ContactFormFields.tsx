@@ -9,22 +9,21 @@ export const contactInputClass =
 
 interface ContactFormFieldsProps {
   subject?: string;
+  message?: string;
   compact?: boolean;
   onSuccess?: () => void;
 }
 
 export function ContactFormFields({
   subject = '',
+  message = '',
   compact = false,
   onSuccess,
 }: ContactFormFieldsProps) {
   const [state, handleSubmit, reset] = useForm(FORMSPREE_FORM_ID);
   const [formSubject, setFormSubject] = useState(subject);
+  const [formMessage, setFormMessage] = useState(message);
   const formRef = useRef<HTMLFormElement>(null);
-
-  useEffect(() => {
-    setFormSubject(subject);
-  }, [subject]);
 
   useEffect(() => {
     if (state.succeeded && onSuccess) {
@@ -36,6 +35,7 @@ export function ContactFormFields({
     reset();
     formRef.current?.reset();
     setFormSubject(subject);
+    setFormMessage(message);
   };
 
   if (state.succeeded) {
@@ -122,7 +122,9 @@ export function ContactFormFields({
           id="contact-message"
           name="message"
           required
-          rows={compact ? 4 : 5}
+          rows={compact ? 4 : formMessage.length > 160 ? 12 : 6}
+          value={formMessage}
+          onChange={(e) => setFormMessage(e.target.value)}
           className={`${contactInputClass} resize-none`}
           placeholder="Tell us about your business and what you'd like to improve..."
         />

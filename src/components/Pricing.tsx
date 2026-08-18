@@ -103,7 +103,13 @@ function PricingCard({
   );
 }
 
-export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) {
+export function Pricing({
+  onSelect,
+  onEstimate,
+}: {
+  onSelect?: (subject: string) => void;
+  onEstimate?: () => void;
+}) {
   return (
     <section
       id="pricing"
@@ -118,6 +124,16 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
             {PRICING_INTRO.title}
           </h2>
           <p className="text-lg text-ink-muted dark:text-slate-400">{PRICING_INTRO.description}</p>
+          {onEstimate ? (
+            <div className="mt-6 flex flex-col gap-3 border border-slate-200 bg-white px-5 py-4 dark:border-white/10 dark:bg-white/5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+              <p className="text-sm leading-relaxed text-ink-muted dark:text-slate-300">
+                Want a starting number for your idea? Walk through a few questions and get a rough estimated investment.
+              </p>
+              <Button variant="secondary" onClick={onEstimate} className="shrink-0">
+                Open Cost Estimator
+              </Button>
+            </div>
+          ) : null}
         </div>
 
         <div className="mb-12 border border-slate-200 bg-white px-5 py-4 dark:border-white/10 dark:bg-white/5 sm:px-6 sm:py-5">

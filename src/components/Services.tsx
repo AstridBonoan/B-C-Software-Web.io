@@ -1,8 +1,9 @@
 import { SERVICES } from '../data/site';
 import { PageShell } from './ui/PageShell';
+import { Button } from './ui/Button';
 import { ServiceIcon } from './ui/ServiceIcon';
 
-export function Services() {
+export function Services({ onNavigate }: { onNavigate: (path: string) => void }) {
   return (
     <PageShell
       eyebrow="Services"
@@ -36,6 +37,9 @@ export function Services() {
           Tell us about your business and goals—we&rsquo;ll recommend the right mix of website,
           tools, and automation for your budget and timeline.
         </p>
+        <Button className="mt-6" onClick={() => onNavigate('/cost-estimator')}>
+          Estimate your project
+        </Button>
       </div>
     </PageShell>
   );

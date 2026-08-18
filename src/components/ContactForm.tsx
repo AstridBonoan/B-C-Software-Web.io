@@ -4,9 +4,10 @@ import { PageShell } from './ui/PageShell';
 
 interface ContactFormProps {
   subject?: string;
+  message?: string;
 }
 
-export function ContactForm({ subject = '' }: ContactFormProps) {
+export function ContactForm({ subject = '', message = '' }: ContactFormProps) {
   return (
     <PageShell
       eyebrow="Contact"
@@ -31,7 +32,7 @@ export function ContactForm({ subject = '' }: ContactFormProps) {
           </a>
         </div>
 
-        <ContactFormFields subject={subject} />
+        <ContactFormFields key={`${subject}::${message}`} subject={subject} message={message} />
       </div>
     </PageShell>
   );

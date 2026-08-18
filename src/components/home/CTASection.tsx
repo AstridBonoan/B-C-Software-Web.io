@@ -27,13 +27,22 @@ export function CTASection({ onNavigate }: CTASectionProps) {
             Share your goals—we&rsquo;ll respond with clear next steps. Free consultation, no obligation.
           </p>
         </div>
-        <button
-          type="button"
-          onClick={() => onNavigate('/contact')}
-          className="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-semibold text-[#0B1220] transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
-        >
-          Start Your Project
-        </button>
+        <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+          <button
+            type="button"
+            onClick={() => onNavigate('/contact')}
+            className="inline-flex items-center justify-center rounded-lg bg-white px-5 py-3 text-sm font-semibold text-[#0B1220] transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+          >
+            Start Your Project
+          </button>
+          <button
+            type="button"
+            onClick={() => onNavigate('/cost-estimator')}
+            className="inline-flex items-center justify-center rounded-lg border border-white/25 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-ink"
+          >
+            Estimate your project
+          </button>
+        </div>
       </motion.div>
     </section>
   );

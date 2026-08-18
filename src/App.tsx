@@ -5,6 +5,7 @@ import { HomePage } from './components/HomePage'
 import { Services } from './components/Services'
 import { Pricing } from './components/Pricing'
 import { ContactForm } from './components/ContactForm'
+import { CostEstimatorPage } from './components/CostEstimatorPage'
 import { Footer } from './components/Footer'
 import { DemosPage } from './components/DemosPage'
 import { AboutMePage } from './components/AboutMePage'
@@ -15,6 +16,7 @@ import './index.css'
 function App() {
   const { isDark, toggleTheme } = useTheme()
   const [contactSubject, setContactSubject] = useState('')
+  const [contactMessage, setContactMessage] = useState('')
   const getRoute = () => {
     const raw = window.location.hash.replace('#', '') || '/'
     return raw.startsWith('/') ? raw : `/${raw}`
@@ -48,7 +50,7 @@ function App() {
     return () => window.cancelAnimationFrame(frame)
   }, [pathname])
 
-  const navigateTo = (path: string) => {
+  const goTo = (path: string) => {
     if (getRoute() !== path) {
       window.location.hash = path
       setPathname(path)
@@ -58,9 +60,26 @@ function App() {
     window.scrollTo(0, 0)
   }
 
+  const openContact = (prefill?: { subject?: string; message?: string }) => {
+    setContactSubject(prefill?.subject ?? '')
+    setContactMessage(prefill?.message ?? '')
+    goTo('/contact')
+  }
+
+  const navigateTo = (path: string) => {
+    if (path === '/contact') {
+      openContact()
+      return
+    }
+    goTo(path)
+  }
+
   const handlePricingSelect = (subject: string) => {
-    setContactSubject(subject)
-    navigateTo('/contact')
+    openContact({ subject })
+  }
+
+  const handleEstimatorQuote = (payload: { subject: string; message: string }) => {
+    openContact(payload)
   }
 
   return (
@@ -73,9 +92,14 @@ function App() {
       />
       <main>
         {pathname === '/' && <HomePage onNavigate={navigateTo} />}
-        {pathname === '/services' && <Services />}
-        {pathname === '/pricing' && <Pricing onSelect={handlePricingSelect} />}
-        {pathname === '/contact' && <ContactForm subject={contactSubject} />}
+        {pathname === '/services' && <Services onNavigate={navigateTo} />}
+        {pathname === '/pricing' && (
+          <Pricing onSelect={handlePricingSelect} onEstimate={() => navigateTo('/cost-estimator')} />
+        )}
+        {pathname === '/cost-estimator' && <CostEstimatorPage onQuote={handleEstimatorQuote} />}
+        {pathname === '/contact' && (
+          <ContactForm subject={contactSubject} message={contactMessage} />
+        )}
         {pathname === '/demos' && <DemosPage onNavigate={navigateTo} />}
         {pathname === '/my-work' && <MyWorkPage onNavigate={navigateTo} />}
         {pathname === '/about' && <AboutMePage onNavigate={navigateTo} />}
