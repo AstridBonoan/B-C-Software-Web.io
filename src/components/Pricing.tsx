@@ -1,4 +1,13 @@
 import { useState } from 'react';
+import {
+  CUSTOM_APPLICATION_PRICING,
+  HOSTING_PRICING,
+  ONLINE_PRESENCE_CATEGORY,
+  PRICING_CATEGORIES,
+  PRICING_INTRO,
+  SUPPORT_PRICING,
+  type PricingTier,
+} from '../data/pricing';
 import { Button } from './ui/Button';
 
 const STRIPE_DEPOSIT_PAYMENT_LINK = 'https://buy.stripe.com/test_placeholder';
@@ -15,169 +24,20 @@ function CheckIcon() {
   );
 }
 
-export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) {
-  const [estimatorOpen, setEstimatorOpen] = useState(false);
-
-  const websiteCreation = [
-    {
-      name: 'Basic',
-      price: '$500',
-      features: ['1-3 Pages', 'Custom UI', 'Mobile Friendly', 'Contact Form', 'Hosting included'],
-    },
-    {
-      name: 'Standard',
-      price: '$800',
-      features: [
-        '3-5 Pages',
-        'Custom UI',
-        'Mobile Friendly',
-        'Contact Form',
-        'Lead & application forms',
-        'Hosting included',
-      ],
-    },
-    {
-      name: 'Advanced',
-      price: '$1200',
-      features: [
-        '6-8 Pages',
-        'Custom UI',
-        'Mobile Friendly',
-        'Contact Form',
-        'Advanced forms (quotes, intake, service requests)',
-        'Light Integrations',
-        'Email Automation',
-        'Basic Stripe Checkout',
-        'Hosting included',
-      ],
-    },
-  ];
-
-  const ecommerceSites = [
-    {
-      name: 'Starter',
-      price: '$1500',
-      description: 'For businesses launching a smaller online store. Everything needed to launch and start selling online.',
-      features: [
-        'Custom UI/UX',
-        'Responsive design',
-        'Product catalog (up to ~10 products)',
-        'Product categories',
-        'Product variations',
-        'Shopping cart',
-        'Checkout',
-        'Stripe/payment integration',
-        'Basic inventory management',
-        'Basic order management',
-        'Order confirmation emails',
-        'Basic shipping configuration',
-        'Basic SEO',
-        'Domain/deployment setup',
-        'Hosting included',
-      ],
-    },
-    {
-      name: 'Professional',
-      price: '$2500',
-      description:
-        'For businesses that need a more robust online store. Includes everything in Starter, plus what you need to operate and grow an established store.',
-      features: [
-        'Everything in Starter',
-        'Custom UI/UX',
-        'Larger product catalog',
-        'Advanced product variations',
-        'Customer accounts',
-        'Customer dashboard',
-        'Order history',
-        'Coupon/discount system',
-        'Advanced inventory management',
-        'Shipping configuration',
-        'Tax configuration',
-        'Product search',
-        'Product filtering',
-        'Automated customer/order emails',
-        'Sales analytics',
-        'Google Analytics integration',
-        'Additional third-party integrations',
-        'More advanced store administration',
-        'Hosting included',
-      ],
-    },
-    {
-      name: 'Advanced',
-      price: '$4000',
-      description:
-        'For businesses requiring complex e-commerce functionality and integrations. Includes everything in Professional, plus a custom system built around how the business operates.',
-      features: [
-        'Everything in Professional',
-        'Custom UI/UX',
-        'Large/complex product catalogs',
-        'Advanced product configuration',
-        'Product bundles/add-ons',
-        'Advanced pricing rules',
-        'Custom checkout workflows',
-        'Advanced shipping logic',
-        'Advanced inventory functionality',
-        'Advanced order management',
-        'Advanced customer functionality',
-        'Custom admin dashboards',
-        'Advanced analytics/reporting',
-        'CRM integrations',
-        'Accounting integrations',
-        'External API integrations',
-        'Automated business workflows',
-        'Custom notifications/automation',
-        'Complex business-specific functionality',
-        'Hosting included',
-      ],
-    },
-  ];
-
-  const saasTools = [
-    {
-      name: 'Basic',
-      price: '$1000',
-      features: [
-        'Single Purpose Feature',
-        'Data Collection & Automation',
-        'Streamlined Workflows',
-        'Basic Integration',
-        'Hosting included',
-      ],
-    },
-    {
-      name: 'Standard',
-      price: '$1600',
-      features: [
-        'Business Process Automation',
-        'Payment Processing',
-        'Calendar & Email Integration',
-        'Confirmations & Reminders',
-        'Hosting included',
-      ],
-    },
-    {
-      name: 'Advanced',
-      price: '$3200',
-      features: [
-        'User Authentication',
-        'Multi-user Dashboards',
-        'Complex Workflows',
-        'Advanced Integrations',
-        'Hosting included',
-      ],
-    },
-  ];
-
-  const PricingCard = ({
-    category,
-    tier,
-    featured = false,
-  }: {
-    category: string;
-    tier: { name: string; price: string; description?: string; features: string[] };
-    featured?: boolean;
-  }) => (
+function PricingCard({
+  category,
+  tier,
+  featured = false,
+  compactPrice = false,
+  onSelect,
+}: {
+  category: string;
+  tier: PricingTier;
+  featured?: boolean;
+  compactPrice?: boolean;
+  onSelect?: (subject: string) => void;
+}) {
+  return (
     <div
       className={
         'flex h-full flex-col border bg-white p-6 dark:bg-white/[0.03] sm:p-7 ' +
@@ -187,7 +47,24 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
       }
     >
       <h4 className="font-display text-lg font-semibold text-ink dark:text-white">{tier.name}</h4>
-      <p className="mt-2 font-display text-3xl font-semibold text-ink dark:text-white">{tier.price}</p>
+      <p
+        className={
+          'mt-2 font-display font-semibold text-ink dark:text-white ' +
+          (compactPrice ? 'text-2xl' : 'text-3xl')
+        }
+      >
+        {tier.pricePrefix ? (
+          <span className="mr-2 text-sm font-medium text-ink-muted dark:text-slate-400">
+            {tier.pricePrefix}
+          </span>
+        ) : null}
+        {tier.price}
+        {tier.priceSuffix ? (
+          <span className="text-base font-medium text-ink-muted dark:text-slate-400">
+            {tier.priceSuffix}
+          </span>
+        ) : null}
+      </p>
       {tier.description ? (
         <p className="mt-3 text-sm leading-relaxed text-ink-muted dark:text-slate-400">
           {tier.description}
@@ -201,9 +78,18 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
           </li>
         ))}
       </ul>
+      {tier.examples ? (
+        <p className="mt-4 text-sm leading-relaxed text-ink-muted dark:text-slate-400">
+          <span className="font-medium text-ink dark:text-slate-200">Examples: </span>
+          {tier.examples}
+        </p>
+      ) : null}
+      {tier.note ? (
+        <p className="mt-3 text-sm leading-relaxed text-ink-muted dark:text-slate-400">{tier.note}</p>
+      ) : null}
       <div className={SHOW_STRIPE_DEPOSIT_BUTTON ? 'mt-6 flex flex-col gap-2' : 'mt-6'}>
         <Button onClick={() => onSelect?.(`${category}: ${tier.name}`)} className="w-full">
-          Get in touch
+          {tier.ctaLabel ?? 'Get in touch'}
         </Button>
         {SHOW_STRIPE_DEPOSIT_BUTTON && (
           <a
@@ -218,6 +104,10 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
       </div>
     </div>
   );
+}
+
+export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) {
+  const [estimatorOpen, setEstimatorOpen] = useState(false);
 
   return (
     <section
@@ -227,14 +117,12 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
       <div className="mx-auto max-w-7xl">
         <div className="mb-10 max-w-3xl">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-brand-600 dark:text-brand-400">
-            Pricing
+            {PRICING_INTRO.eyebrow}
           </p>
           <h2 className="mb-3 font-display text-4xl font-semibold tracking-tight text-ink dark:text-white sm:text-5xl">
-            Clear packages for every stage
+            {PRICING_INTRO.title}
           </h2>
-          <p className="text-lg text-ink-muted dark:text-slate-400">
-            Flat-rate packages for builds—plus hourly pricing for post-launch edits and support.
-          </p>
+          <p className="text-lg text-ink-muted dark:text-slate-400">{PRICING_INTRO.description}</p>
         </div>
 
         <div className="mb-12 border border-slate-200 bg-white px-5 py-4 dark:border-white/10 dark:bg-white/5 sm:px-6 sm:py-5">
@@ -247,123 +135,65 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
           </p>
         </div>
 
-        <div className="mb-14">
-          <div className="mb-6">
-            <h3 className="font-display text-2xl font-semibold text-ink dark:text-white">
-              Website Creation
-            </h3>
-            <p className="mt-1 text-ink-muted dark:text-slate-400">
-              Custom, responsive websites built with modern technologies
-            </p>
+        {PRICING_CATEGORIES.map((category) => (
+          <div key={category.id} className="mb-14">
+            <div className="mb-6">
+              <h3 className="font-display text-2xl font-semibold text-ink dark:text-white">
+                {category.title}
+              </h3>
+              <p className="mt-1 max-w-3xl text-ink-muted dark:text-slate-400">
+                {category.description}
+              </p>
+            </div>
+            <div
+              className={
+                category.layout === 'single'
+                  ? 'max-w-lg'
+                  : 'grid grid-cols-1 gap-4 md:grid-cols-3'
+              }
+            >
+              {category.tiers.map((tier) => (
+                <PricingCard
+                  key={tier.name}
+                  category={category.title}
+                  tier={tier}
+                  featured={category.featuredTier === tier.name}
+                  onSelect={onSelect}
+                />
+              ))}
+            </div>
+            {category.footerNote ? (
+              <p className="mt-4 max-w-3xl text-sm leading-relaxed text-ink-muted dark:text-slate-400">
+                {category.footerNote}
+              </p>
+            ) : null}
           </div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            {websiteCreation.map((tier) => (
-              <PricingCard
-                key={tier.name}
-                category="Website Creation"
-                tier={tier}
-                featured={tier.name === 'Standard'}
-              />
-            ))}
-          </div>
-        </div>
+        ))}
 
         <div className="mb-14">
           <div className="mb-6">
             <h3 className="font-display text-2xl font-semibold text-ink dark:text-white">
-              E-Commerce Site
+              {CUSTOM_APPLICATION_PRICING.title}
             </h3>
-            <p className="mt-1 text-ink-muted dark:text-slate-400">
-              Online stores built to sell products, take payments, and manage orders
+            <p className="mt-1 max-w-3xl text-ink-muted dark:text-slate-400">
+              {CUSTOM_APPLICATION_PRICING.description}
             </p>
           </div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            {ecommerceSites.map((tier) => (
-              <PricingCard
-                key={tier.name}
-                category="E-Commerce Site"
-                tier={tier}
-                featured={tier.name === 'Professional'}
-              />
-            ))}
-          </div>
-        </div>
-
-        <div className="mb-14">
-          <div className="mb-6">
-            <h3 className="font-display text-2xl font-semibold text-ink dark:text-white">
-              SaaS Tools
-            </h3>
-            <p className="mt-1 text-ink-muted dark:text-slate-400">
-              Build scalable Software-as-a-Service solutions tailored to your business
+          <div className="max-w-2xl border border-slate-200 bg-white p-6 dark:border-white/10 dark:bg-white/[0.03] sm:p-7">
+            <h4 className="font-display text-lg font-semibold text-ink dark:text-white">
+              {CUSTOM_APPLICATION_PRICING.name}
+            </h4>
+            <p className="mt-2 font-display text-3xl font-semibold text-ink dark:text-white">
+              <span className="mr-2 text-sm font-medium text-ink-muted dark:text-slate-400">
+                {CUSTOM_APPLICATION_PRICING.pricePrefix}
+              </span>
+              {CUSTOM_APPLICATION_PRICING.price}
             </p>
-          </div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            {saasTools.map((tier) => (
-              <PricingCard
-                key={tier.name}
-                category="SaaS Tools"
-                tier={tier}
-                featured={tier.name === 'Standard'}
-              />
-            ))}
-          </div>
-        </div>
-
-        <div className="mb-14">
-          <div className="mb-6">
-            <h3 className="font-display text-2xl font-semibold text-ink dark:text-white">
-              Online Presence
-            </h3>
-            <p className="mt-1 text-ink-muted dark:text-slate-400">
-              Get listed where local customers search so your business shows up with accurate info
+            <p className="mt-3 text-sm leading-relaxed text-ink-muted dark:text-slate-400">
+              {CUSTOM_APPLICATION_PRICING.intro}
             </p>
-          </div>
-          <div className="max-w-md">
-            <PricingCard
-              category="Online Presence"
-              tier={{
-                name: 'Listing Bundle',
-                price: '$300',
-                features: [
-                  'Google Business Profile setup',
-                  'Yelp business listing',
-                  'Apple Maps listing',
-                  'LinkedIn company page',
-                  'Nextdoor business page',
-                  'Consistent name, address, phone & hours',
-                ],
-              }}
-            />
-          </div>
-        </div>
-
-        <div>
-          <div className="mb-6">
-            <h3 className="font-display text-2xl font-semibold text-ink dark:text-white">
-              Edits &amp; Support
-            </h3>
-            <p className="mt-1 text-ink-muted dark:text-slate-400">
-              Project packages cover design and launch. After delivery, updates and support are
-              billed hourly.
-            </p>
-          </div>
-          <div className="max-w-2xl border border-slate-200 bg-white p-6 dark:border-white/10 dark:bg-white/[0.03] sm:p-8">
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600 dark:text-brand-400">
-              Hourly rate
-            </p>
-            <p className="mt-1 font-display text-4xl font-semibold text-ink dark:text-white">
-              $30
-              <span className="text-xl font-medium text-ink-muted dark:text-slate-400">/hr</span>
-            </p>
-            <ul className="mt-6 space-y-2.5">
-              {[
-                'Content updates, new sections, and layout tweaks',
-                'Bug fixes and small feature changes',
-                'Billed in 30-minute increments',
-                'Quoted and approved before work begins',
-                'Revision rounds during the project are included in your package',
-              ].map((item) => (
+            <ul className="mt-5 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+              {CUSTOM_APPLICATION_PRICING.quotedOn.map((item) => (
                 <li key={item} className="flex items-start gap-2.5">
                   <CheckIcon />
                   <span className="text-sm text-ink-muted dark:text-slate-300">{item}</span>
@@ -371,11 +201,95 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
               ))}
             </ul>
             <Button
-              onClick={() => onSelect?.('Edits & Support: Hourly')}
+              onClick={() => onSelect?.('Custom Web Applications: Discuss Project')}
+              className="mt-6 w-full sm:w-auto"
+            >
+              {CUSTOM_APPLICATION_PRICING.ctaLabel}
+            </Button>
+          </div>
+        </div>
+
+        <div className="mb-14">
+          <div className="mb-6">
+            <h3 className="font-display text-2xl font-semibold text-ink dark:text-white">
+              {ONLINE_PRESENCE_CATEGORY.title}
+            </h3>
+            <p className="mt-1 max-w-3xl text-ink-muted dark:text-slate-400">
+              {ONLINE_PRESENCE_CATEGORY.description}
+            </p>
+          </div>
+          <div className="max-w-lg">
+            {ONLINE_PRESENCE_CATEGORY.tiers.map((tier) => (
+              <PricingCard
+                key={tier.name}
+                category={ONLINE_PRESENCE_CATEGORY.title}
+                tier={tier}
+                onSelect={onSelect}
+              />
+            ))}
+          </div>
+          {ONLINE_PRESENCE_CATEGORY.footerNote ? (
+            <p className="mt-4 max-w-3xl text-sm leading-relaxed text-ink-muted dark:text-slate-400">
+              {ONLINE_PRESENCE_CATEGORY.footerNote}
+            </p>
+          ) : null}
+        </div>
+
+        <div className="mb-14">
+          <div className="mb-6">
+            <h3 className="font-display text-2xl font-semibold text-ink dark:text-white">
+              {SUPPORT_PRICING.title}
+            </h3>
+            <p className="mt-1 max-w-3xl text-ink-muted dark:text-slate-400">
+              {SUPPORT_PRICING.description}
+            </p>
+          </div>
+          <div className="max-w-xl border border-slate-200 bg-white p-6 dark:border-white/10 dark:bg-white/[0.03] sm:p-7">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-600 dark:text-brand-400">
+              {SUPPORT_PRICING.label}
+            </p>
+            <p className="mt-1 font-display text-2xl font-semibold text-ink dark:text-white">
+              {SUPPORT_PRICING.price}
+              <span className="text-base font-medium text-ink-muted dark:text-slate-400">
+                {SUPPORT_PRICING.priceSuffix}
+              </span>
+            </p>
+            <ul className="mt-5 space-y-2.5">
+              {SUPPORT_PRICING.features.map((item) => (
+                <li key={item} className="flex items-start gap-2.5">
+                  <CheckIcon />
+                  <span className="text-sm text-ink-muted dark:text-slate-300">{item}</span>
+                </li>
+              ))}
+            </ul>
+            <Button
+              onClick={() => onSelect?.('Edits & Support: Additional Development')}
               className="mt-6 w-full sm:w-auto"
             >
               Get in touch
             </Button>
+          </div>
+        </div>
+
+        <div>
+          <div className="mb-6">
+            <h3 className="font-display text-2xl font-semibold text-ink dark:text-white">
+              {HOSTING_PRICING.title}
+            </h3>
+            <p className="mt-1 max-w-3xl text-ink-muted dark:text-slate-400">
+              {HOSTING_PRICING.description}
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-4 md:max-w-3xl md:grid-cols-2">
+            {HOSTING_PRICING.plans.map((plan) => (
+              <PricingCard
+                key={plan.name}
+                category="Hosting & Maintenance"
+                tier={plan}
+                compactPrice
+                onSelect={onSelect}
+              />
+            ))}
           </div>
         </div>
       </div>
