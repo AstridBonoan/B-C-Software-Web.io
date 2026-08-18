@@ -51,6 +51,50 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
     },
   ];
 
+  const ecommerceSites = [
+    {
+      name: 'Starter',
+      price: '$1500',
+      features: [
+        'Product catalog (up to 15 products)',
+        'Shopping cart',
+        'Stripe checkout',
+        'Custom UI',
+        'Mobile Friendly',
+        'Order confirmation emails',
+      ],
+    },
+    {
+      name: 'Professional',
+      price: '$2500',
+      features: [
+        'Product catalog (up to 40 products)',
+        'Collections & categories',
+        'Product variants (size, color)',
+        'Shopping cart',
+        'Stripe checkout',
+        'Shipping options',
+        'Inventory tracking',
+        'Order confirmation emails',
+      ],
+    },
+    {
+      name: 'Advanced',
+      price: '$4000',
+      features: [
+        'Unlimited products',
+        'Customer accounts',
+        'Discount codes & promotions',
+        'Admin product dashboard',
+        'Advanced inventory',
+        'Stripe checkout',
+        'Email automation',
+        'Custom UI',
+        'Mobile Friendly',
+      ],
+    },
+  ];
+
   const saasTools = [
     {
       name: 'Basic',
@@ -173,6 +217,27 @@ export function Pricing({ onSelect }: { onSelect?: (subject: string) => void }) 
                 category="Website Creation"
                 tier={tier}
                 featured={tier.name === 'Standard'}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="mb-14">
+          <div className="mb-6">
+            <h3 className="font-display text-2xl font-semibold text-ink dark:text-white">
+              E-Commerce Site
+            </h3>
+            <p className="mt-1 text-ink-muted dark:text-slate-400">
+              Online stores built to sell products, take payments, and manage orders
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            {ecommerceSites.map((tier) => (
+              <PricingCard
+                key={tier.name}
+                category="E-Commerce Site"
+                tier={tier}
+                featured={tier.name === 'Professional'}
               />
             ))}
           </div>
